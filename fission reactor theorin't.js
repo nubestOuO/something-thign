@@ -7,7 +7,7 @@ var id = "axolotl_OuO";
 var name = "fission reactor";
 var description = "fission reactor(and some other things)(ps:this is not nuclear craft)";
 var authors = "a nub ouo (nubest#1001)";
-var version = 1;
+var version = 1.1;
 var currency1, currency2, currency3, currency4, currency5, currency6, currency7, currency8, currency9;
 var Um ,UD, URU, UR, NpRU, NpR, PuRU, PuR, AmRU, AmR, CmRU, CmR, BkRU, BkR, CfRU, CfR, URT, NpRT, PuRT, AmRT, CmRT, BkRT, CfRT;
 quaternaryEntries = [];
@@ -246,8 +246,8 @@ var tick = (elapsedTime, multiplier) => {
     currency5.value += currency1.value < UR.level ? 0 : UR.level*0.005
     currency6.value += currency1.value < UR.level ? 0 : UR.level*0.00003
     currency7.value += currency1.value < UR.level ? 0 : UR.level*0.00001
-    currency8.value += currency1.value < UR.level ? 0 : UR.level*0.00000002
-    currency9.value += currency1.value < UR.level ? 0 : UR.level*dt*BigNumber.from(2.22517e3)
+    currency8.value += currency1.value < UR.level ? 0 : UR.level*0.00000002*URT.level
+    currency9.value += currency1.value < UR.level ? 0 : UR.level*dt*BigNumber.from(2.22517e3)*URT.level
     //neptunium
     currency1.value += currency2.value < NpR.level ? 0 : NpR.level*0.1
     currency2.value += currency2.value < NpR.level ? 0 : NpR.level*0.412
@@ -256,8 +256,8 @@ var tick = (elapsedTime, multiplier) => {
     currency5.value += currency2.value < NpR.level ? 0 : NpR.level*0.016
     currency6.value += currency2.value < NpR.level ? 0 : NpR.level*0.001
     currency7.value += currency2.value < NpR.level ? 0 : NpR.level*0.008
-    currency8.value += currency2.value < NpR.level ? 0 : NpR.level*0.0001*URT.level
-    currency9.value += currency2.value < NpR.level ? 0 : UR.level*NpR.level*dt*BigNumber.from(2.23124e5)*URT.level
+    currency8.value += currency2.value < NpR.level ? 0 : NpR.level*0.0001*NpRT.level
+    currency9.value += currency2.value < NpR.level ? 0 : UR.level*NpR.level*dt*BigNumber.from(2.23124e5)*NpRT.level
     //plutonium
     currency3.value += currency3.value < PuR.level ? 0 : PuR.level*0.3
     currency4.value += currency3.value < PuR.level ? 0 : PuR.level*0.22
@@ -291,7 +291,7 @@ var tick = (elapsedTime, multiplier) => {
     currency9.value += currency7.value < CfR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BkR.level*CfR.level*BigNumber.from(5e15)*dt*CfRT.level
     //tweaks decay
     currency1.value += -currency1.value*BigNumber.from(4.1341e-10)
-    //tweaks fission reactor decay .ect
+    //tweaks fission reactor .ect
     currency1.value += currency1.value < UR.level ? 0 : -UR.level*dt;
     currency2.value += currency2.value < NpR.level ? 0 : -NpR.level*dt;
     currency3.value += currency3.value < PuR.level ? 0 : -PuR.level*dt;
