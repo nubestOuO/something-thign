@@ -245,67 +245,67 @@ var tick = (elapsedTime, multiplier) => {
     let bonus = theory.publicationMultiplier;
     //decay
     currency1.value += Math.log2(Um.level+1)*dt*bonus*(UD.level+1)
-    currency2.value += currency1.value*BigNumber.from(1.123141e-12)-currency2.value*BigNumber.from(2e-5)
-    currency3.value += currency1.value*BigNumber.from(4.1341e-10)-currency3.value*BigNumber.from(5.5202256e-11)
-    currency4.value += currency3.value*BigNumber.from(1.231e-12)-currency4.value*BigNumber.from(1.36298592e-10)
-    currency5.value += currency4.value*BigNumber.from(1.266e-12)-currency5.value*BigNumber.from(2.83824e-11)
-    currency6.value += currency5.value*BigNumber.from(5.67648e-12)-currency6.value*BigNumber.from(4.351968e-10)
-    currency7.value += currency1.value*BigNumber.from(1e-11)-currency7.value*BigNumber.from(1.538784e-6)
-    currency8.value += currency7.value*BigNumber.from(1.538784e-6)*Math.log2(bonus)
+    currency2.value += currency1.value*BigNumber.from(1.123141e-12)*dt-currency2.value*BigNumber.from(2e-5)*dt
+    currency3.value += currency1.value*BigNumber.from(4.1341e-10)*dt-currency3.value*BigNumber.from(5.5202256e-11)*dt
+    currency4.value += currency3.value*BigNumber.from(1.231e-12)*dt-currency4.value*BigNumber.from(1.36298592e-10)*dt
+    currency5.value += currency4.value*BigNumber.from(1.266e-12)*dt-currency5.value*BigNumber.from(2.83824e-11)*dt
+    currency6.value += currency5.value*BigNumber.from(5.67648e-12)*dt-currency6.value*BigNumber.from(4.351968e-10)*dt
+    currency7.value += currency1.value*BigNumber.from(1e-11)*dt-currency7.value*BigNumber.from(1.538784e-6)*dt
+    currency8.value += currency7.value*BigNumber.from(1.538784e-6)*Math.log2(bonus)*dt
     currency9.value += ((currency1.value)*dt*0.001+(currency2.value)*dt*10.0+(currency3.value)*dt*62.2+(currency4.value)*dt*317.22+(currency5.value)*dt*315.0+(currency6.value)*dt*10880+(currency7.value)*dt*30000)*(currency8.value+1).pow(1)
     //Uranium
-    currency1.value += currency1.value < UR.level ? 0 : UR.level*0.55
-    currency2.value += currency1.value < UR.level ? 0 : UR.level*0.06
-    currency3.value += currency1.value < UR.level ? 0 : UR.level*0.02
-    currency4.value += currency1.value < UR.level ? 0 : UR.level*0.006
-    currency5.value += currency1.value < UR.level ? 0 : UR.level*0.005
-    currency6.value += currency1.value < UR.level ? 0 : UR.level*0.00003
-    currency7.value += currency1.value < UR.level ? 0 : UR.level*0.00001
-    currency8.value += currency1.value < UR.level ? 0 : UR.level*0.00000002*URT.level
+    currency1.value += currency1.value < UR.level ? 0 : UR.level*0.55*dt
+    currency2.value += currency1.value < UR.level ? 0 : UR.level*0.06*dt
+    currency3.value += currency1.value < UR.level ? 0 : UR.level*0.02*dt
+    currency4.value += currency1.value < UR.level ? 0 : UR.level*0.006*dt
+    currency5.value += currency1.value < UR.level ? 0 : UR.level*0.005*dt
+    currency6.value += currency1.value < UR.level ? 0 : UR.level*0.00003*dt
+    currency7.value += currency1.value < UR.level ? 0 : UR.level*0.00001*dt
+    currency8.value += currency1.value < UR.level ? 0 : UR.level*0.00000002*URT.level*dt
     currency9.value += currency1.value < UR.level ? 0 : UR.level*dt*BigNumber.from(2.22517e3)*URT.level
     //neptunium
-    currency1.value += currency2.value < NpR.level ? 0 : NpR.level*0.1
-    currency2.value += currency2.value < NpR.level ? 0 : NpR.level*0.412
-    currency3.value += currency2.value < NpR.level ? 0 : NpR.level*0.165
-    currency4.value += currency2.value < NpR.level ? 0 : NpR.level*0.014
-    currency5.value += currency2.value < NpR.level ? 0 : NpR.level*0.016
-    currency6.value += currency2.value < NpR.level ? 0 : NpR.level*0.001
-    currency7.value += currency2.value < NpR.level ? 0 : NpR.level*0.008
-    currency8.value += currency2.value < NpR.level ? 0 : NpR.level*0.0001*NpRT.level
+    currency1.value += currency2.value < NpR.level ? 0 : NpR.level*0.1*dt
+    currency2.value += currency2.value < NpR.level ? 0 : NpR.level*0.412*dt
+    currency3.value += currency2.value < NpR.level ? 0 : NpR.level*0.165*dt
+    currency4.value += currency2.value < NpR.level ? 0 : NpR.level*0.014*dt
+    currency5.value += currency2.value < NpR.level ? 0 : NpR.level*0.016*dt
+    currency6.value += currency2.value < NpR.level ? 0 : NpR.level*0.001*dt
+    currency7.value += currency2.value < NpR.level ? 0 : NpR.level*0.008*dt
+    currency8.value += currency2.value < NpR.level ? 0 : NpR.level*0.0001*NpRT.level*dt
     currency9.value += currency2.value < NpR.level ? 0 : UR.level*NpR.level*dt*BigNumber.from(2.23124e5)*NpRT.level
     //plutonium
-    currency3.value += currency3.value < PuR.level ? 0 : PuR.level*0.3
-    currency4.value += currency3.value < PuR.level ? 0 : PuR.level*0.22
-    currency5.value += currency3.value < PuR.level ? 0 : PuR.level*0.29
-    currency6.value += currency3.value < PuR.level ? 0 : PuR.level*0.01
-    currency7.value += currency3.value < PuR.level ? 0 : PuR.level*0.0008
-    currency8.value += currency3.value < PuR.level ? 0 : PuR.level*0.0003*PuRT.level
+    currency3.value += currency3.value < PuR.level ? 0 : PuR.level*0.3*dt
+    currency4.value += currency3.value < PuR.level ? 0 : PuR.level*0.22*dt
+    currency5.value += currency3.value < PuR.level ? 0 : PuR.level*0.29*dt
+    currency6.value += currency3.value < PuR.level ? 0 : PuR.level*0.01*dt
+    currency7.value += currency3.value < PuR.level ? 0 : PuR.level*0.0008*dt
+    currency8.value += currency3.value < PuR.level ? 0 : PuR.level*0.0003*PuRT.level*dt
     currency9.value += currency3.value < PuR.level ? 0 : UR.level*NpR.level*PuR.level*BigNumber.from(2.089e7)*dt*PuRT.level
     //americium
-    currency4.value += currency4.value < AmR.level ? 0 : AmR.level*0.4
-    currency5.value += currency4.value < AmR.level ? 0 : AmR.level*0.26
-    currency6.value += currency4.value < AmR.level ? 0 : AmR.level*0.03
-    currency7.value += currency4.value < AmR.level ? 0 : AmR.level*0.02
-    currency8.value += currency4.value < AmR.level ? 0 : AmR.level*0.008*AmRT.level
+    currency4.value += currency4.value < AmR.level ? 0 : AmR.level*0.4*dt
+    currency5.value += currency4.value < AmR.level ? 0 : AmR.level*0.26*dt
+    currency6.value += currency4.value < AmR.level ? 0 : AmR.level*0.03*dt
+    currency7.value += currency4.value < AmR.level ? 0 : AmR.level*0.02*dt
+    currency8.value += currency4.value < AmR.level ? 0 : AmR.level*0.008*AmRT.level*dt
     currency9.value += currency4.value < AmR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*BigNumber.from(4.42e9)*dt*AmRT.level
     //curium
-    currency5.value += currency5.value < CmR.level ? 0 : CmR.level*0.34
-    currency6.value += currency5.value < CmR.level ? 0 : CmR.level*0.5
-    currency7.value += currency5.value < CmR.level ? 0 : CmR.level*0.1
-    currency8.value += currency5.value < CmR.level ? 0 : CmR.level*0.07*CmRT.level
+    currency5.value += currency5.value < CmR.level ? 0 : CmR.level*0.34*dt
+    currency6.value += currency5.value < CmR.level ? 0 : CmR.level*0.5*dt
+    currency7.value += currency5.value < CmR.level ? 0 : CmR.level*0.1*dt
+    currency8.value += currency5.value < CmR.level ? 0 : CmR.level*0.07*CmRT.level*dt
     currency9.value += currency5.value < CmR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BigNumber.from(2.3e11)*dt*CmRT.level
     //berkelium
-    currency6.value += currency6.value < BkR.level ? 0 : BkR.level*0.33
-    currency7.value += currency6.value < BkR.level ? 0 : BkR.level*0.4
-    currency8.value += currency6.value < BkR.level ? 0 : BkR.level*0.1*BkRT.level
+    currency6.value += currency6.value < BkR.level ? 0 : BkR.level*0.33*dt
+    currency7.value += currency6.value < BkR.level ? 0 : BkR.level*0.4*dt
+    currency8.value += currency6.value < BkR.level ? 0 : BkR.level*0.1*BkRT.level*dt
     currency9.value += currency6.value < BkR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BkR.level*BigNumber.from(2e13)*dt*BkRT.level
     //californium
-    currency6.value += currency7.value < CfR.level ? 0 : CfR.level*0.3
-    currency7.value += currency7.value < CfR.level ? 0 : CfR.level*0.2
-    currency8.value += currency7.value < CfR.level ? 0 : CfR.level*0.1*CfRT.level
+    currency6.value += currency7.value < CfR.level ? 0 : CfR.level*0.3*dt
+    currency7.value += currency7.value < CfR.level ? 0 : CfR.level*0.2*dt
+    currency8.value += currency7.value < CfR.level ? 0 : CfR.level*0.1*CfRT.level*dt
     currency9.value += currency7.value < CfR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BkR.level*CfR.level*BigNumber.from(5e15)*dt*CfRT.level
     //tweaks decay
-    currency1.value += -currency1.value*BigNumber.from(4.1341e-10)
+    currency1.value += -currency1.value*BigNumber.from(4.1341e-10)*dt
     //tweaks fission reactor .ect
     currency1.value += currency1.value < UR.level ? 0 : -UR.level*dt*URT.level;
     currency2.value += currency2.value < NpR.level ? 0 : -NpR.level*dt*NpRT.level;
