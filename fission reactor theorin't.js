@@ -7,7 +7,7 @@ var id = "axolotl_OuO";
 var name = "fission reactor";
 var description = "fission reactor(and some other things)(ps:this is not nuclear craft)";
 var authors = "a nub ouo (nubest#1001)";
-var version = 1.7;
+var version = 1.8;
 var currency1, currency2, currency3, currency4, currency5, currency6, currency7, currency8, currency9;
 var Um ,UD, URU, UR, NpRU, NpR, PuRU, PuR, AmRU, AmR, CmRU, CmR, BkRU, BkR, CfRU, CfR, URT, NpRT, PuRT, AmRT, CmRT, BkRT, CfRT;
 quaternaryEntries = [];
@@ -327,7 +327,7 @@ var getPrimaryEquation = () => {
     let result = "P = \\sum DE_s + \\sum RE_s"
     return result;
 }
-var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.9}"
+var getSecondaryEquation = () => theory.latexSymbol + "=\\max P"
 var getQuaternaryEntries = () => {
     if (quaternaryEntries.length == 0)
     {
@@ -350,9 +350,9 @@ var getQuaternaryEntries = () => {
     quaternaryEntries[7].value=currency8.value
     return quaternaryEntries
 }
-var getPublicationMultiplier = (tau) => tau.pow(0.2);
-var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.164}";
-var getTau = () => currency9.value.pow(0.9)
+var getPublicationMultiplier = (tau) => tau.pow(0.22);
+var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.22}";
+var getTau = () => currency9.value.pow(1)
 var get2DGraphValue = () => currency9.value.sign * (BigNumber.ONE + currency9.value.abs()).log10().toNumber();
 var getUm = (level) => Utils.getStepwisePowerSum(level, 1.0000000001, 10, 0);
 var getUR = (level) => Utils.getStepwisePowerSum(level, 2, 10, 0);
