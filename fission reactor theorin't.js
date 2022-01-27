@@ -305,7 +305,7 @@ var tick = (elapsedTime, multiplier) => {
     currency8.value += currency7.value < CfR.level ? 0 : CfR.level*0.1*CfRT.level
     currency9.value += currency7.value < CfR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BkR.level*CfR.level*BigNumber.from(5e15)*dt*CfRT.level
     //tweaks decay
-    currency1.value += -currency1.value*BigNumber.from(4.1341e-10)+10000000000000000000000
+    currency1.value += -currency1.value*BigNumber.from(4.1341e-10)
     //tweaks fission reactor .ect
     currency1.value += currency1.value < UR.level ? 0 : -UR.level*dt*URT.level;
     currency2.value += currency2.value < NpR.level ? 0 : -NpR.level*dt*NpRT.level;
