@@ -7,7 +7,7 @@ var id = "axolotl_OuO";
 var name = "fission reactor";
 var description = "fission reactor(and some other things)(ps:this is not nuclear craft)";
 var authors = "a nub ouo (nubest#1001)";
-var version = 1.4;
+var version = 1.7;
 var currency1, currency2, currency3, currency4, currency5, currency6, currency7, currency8, currency9;
 var Um ,UD, URU, UR, NpRU, NpR, PuRU, PuR, AmRU, AmR, CmRU, CmR, BkRU, BkR, CfRU, CfR, URT, NpRT, PuRT, AmRT, CmRT, BkRT, CfRT;
 quaternaryEntries = [];
@@ -157,7 +157,6 @@ var init = () => {
         CfRT.getInfo = (amount) => Utils.getMathTo(getInfo(CfRT.level), getInfo(CfRT.level + 1));
         CfRT.isAvailable = false;
     }
-    // Permanent Upgrades
     theory.createPublicationUpgrade(0, currency2, 1000);
     theory.createBuyAllUpgrade(1, currency6, 1);
     theory.createAutoBuyerUpgrade(2, currency8, 10);
@@ -210,9 +209,7 @@ var init = () => {
         CfRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Californium Reactor}");
         CfRU.boughtOrRefunded = (_) => updateAvailability()
     }
-    //// Milestone Upgrades
     theory.setMilestoneCost(new LinearCost(50, 10));
-
     achievement1 = theory.createSecretAchievement(0, "Warm Green Glow", "Unlock Uranium Reactor", "Unlock Uranium Reactor", () => URU.level > 0);
     achievement2 = theory.createSecretAchievement(1, "Sweet Neptune", "Unlock Neptunium Reactor", "Unlock Neptunium Reactor", () => NpRU.level > 0);
     achievement3 = theory.createSecretAchievement(2, "Criticality", "Unlock Plutonium Reactor", "Unlock Plutonium Reactor", () => PuRU.level > 0);
@@ -306,7 +303,6 @@ var tick = (elapsedTime, multiplier) => {
     currency9.value += currency7.value < CfR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BkR.level*CfR.level*BigNumber.from(5e15)*dt*CfRT.level
     //tweaks decay
     currency1.value += -currency1.value*BigNumber.from(4.1341e-10)*dt
-    //tweaks fission reactor .ect
     currency1.value += currency1.value < UR.level ? 0 : -UR.level*dt*URT.level;
     currency2.value += currency2.value < NpR.level ? 0 : -NpR.level*dt*NpRT.level;
     currency3.value += currency3.value < PuR.level ? 0 : -PuR.level*dt*PuRT.level;
@@ -316,7 +312,6 @@ var tick = (elapsedTime, multiplier) => {
     currency7.value += currency7.value < CfR.level ? 0 : -CfR.level*dt*CfRT.level;
     theory.invalidateQuaternaryValues();
 }
-
 var postPublish = () => {
     currency1.value = BigNumber.ZERO;
     currency2.value = BigNumber.ZERO;
