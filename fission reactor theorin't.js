@@ -7,7 +7,7 @@ var id = "axolotl_OuO";
 var name = "fission reactor";
 var description = "fission reactor(and some other things)(ps:this is not nuclear craft)";
 var authors = "a nub ouo (nubest#1001)";
-var version = 1.11;
+var version = 1.12;
 var currency1, currency2, currency3, currency4, currency5, currency6, currency7, currency8, currency9;
 var Um ,UD, URU, UR, NpRU, NpR, PuRU, PuR, AmRU, AmR, CmRU, CmR, BkRU, BkR, CfRU, CfR, URT, NpRT, PuRT, AmRT, CmRT, BkRT, CfRT,OPHWR, OMSR;
 var UDExp, PHWR, MSR;
@@ -40,7 +40,7 @@ var init = () => {
         Um.getInfo = (amount) => Utils.getMathTo(getInfo(Um.level), getInfo(Um.level + 1));
     }
     {
-        let getDesc = (level) => "(\\text{U}_1)\\text{Uranium mine Drill level:" + level+ "}"
+        let getDesc = (level) => "(\\text{U}_2)\\text{Uranium mine Drill level:" + level+ "}"
         let getInfo = (level) => "(\\text{U}_2)\\text{Drill power:}" +getUD(level).toString(0);
         UD = theory.createUpgrade(8, currency1, new ExponentialCost(20, Math.log2(5)));
         UD.getDescription = (_) => Utils.getMath(getDesc(UD.level));
@@ -177,52 +177,52 @@ var init = () => {
         OMSR.maxLevel = 100
     }
     theory.createPublicationUpgrade(0, currency2, 1000);
-    theory.createBuyAllUpgrade(1, currency6, 1);
-    theory.createAutoBuyerUpgrade(2, currency8, 10);
+    theory.createBuyAllUpgrade(1, currency6, 2);
+    theory.createAutoBuyerUpgrade(2, currency8, 25);
     {
-        URU = theory.createPermanentUpgrade(3, currency1, new LinearCost(1000000, 0));
+        URU = theory.createPermanentUpgrade(3, currency1, new LinearCost(1200000, 0));
         URU.maxLevel = 1;
         URU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Uranium Reactor}");
         URU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Uranium Reactor}");
         URU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        NpRU = theory.createPermanentUpgrade(4, currency2, new LinearCost(100000, 0));
+        NpRU = theory.createPermanentUpgrade(4, currency2, new LinearCost(150000, 0));
         NpRU.maxLevel = 1;
         NpRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Neptunium Reactor}");
         NpRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Neptunium Reactor}");
         NpRU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        PuRU = theory.createPermanentUpgrade(5, currency3, new LinearCost(200000, 0));
+        PuRU = theory.createPermanentUpgrade(5, currency3, new LinearCost(500000, 0));
         PuRU.maxLevel = 1;
         PuRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Plutonium Reactor}");
         PuRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Plutonium Reactor}");
         PuRU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        AmRU = theory.createPermanentUpgrade(6, currency4, new LinearCost(400000, 0));
+        AmRU = theory.createPermanentUpgrade(6, currency4, new LinearCost(800000, 0));
         AmRU.maxLevel = 1;
         AmRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Americium Reactor}");
         AmRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Americium Reactor}");
         AmRU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        CmRU = theory.createPermanentUpgrade(7, currency5, new LinearCost(400000, 0));
+        CmRU = theory.createPermanentUpgrade(7, currency5, new LinearCost(800000, 0));
         CmRU.maxLevel = 1;
         CmRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Curium Reactor}");
         CmRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Curium Reactor}");
         CmRU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        BkRU = theory.createPermanentUpgrade(8, currency6, new LinearCost(200000, 0));
+        BkRU = theory.createPermanentUpgrade(8, currency6, new LinearCost(500000, 0));
         BkRU.maxLevel = 1;
         BkRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Berkelium Reactor}");
         BkRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Berkelium Reactor}");
         BkRU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        CfRU = theory.createPermanentUpgrade(9, currency7, new LinearCost(3000000, 0));
+        CfRU = theory.createPermanentUpgrade(9, currency7, new LinearCost(9000000, 0));
         CfRU.maxLevel = 1;
         CfRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Californium Reactor}");
         CfRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Californium Reactor}");
@@ -257,7 +257,7 @@ var init = () => {
     achievement7 = theory.createSecretAchievement(6, "California Dreamin'", "Unlock Californium Reactor", "Unlock Californium Reactor", () => CfRU.level > 0);
     achievement8 = theory.createSecretAchievement(7, "E=mc²", "Einstenium amout > 1e10","no", () => currency8.value > BigNumber.from(1e10));
     achievement9 = theory.createSecretAchievement(8, "who on earth will do this", "buy 1 million U_1 level", "professional clicker", () => Um.level>1000000)
-    achievement10 = theory.createSecretAchievement(9,"you are half way to make this theory crash", "1b/2.17b", "rip u device", ()=>Um.level>BigNumber.from(1e9))
+    achievement10 = theory.createSecretAchievement(9,"you are half way there", "1b/2.17b", "rip u device", ()=>Um.level>BigNumber.from(1e9))
 }
 var updateAvailability = () => {
     UR.isAvailable = URU.level > 0;
@@ -391,9 +391,9 @@ var getQuaternaryEntries = () => {
     quaternaryEntries[7].value=currency8.value
     return quaternaryEntries
 }
-var getPublicationMultiplier = (tau) => tau.pow(0.2);
-var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.2}";
-var getTau = () => currency9.value.pow(1)
+var getPublicationMultiplier = (tau) => tau.pow(0.2033);
+var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.2033}";
+var getTau = () => currency9.value.pow(0.99)
 var get2DGraphValue = () => currency9.value.sign * (BigNumber.ONE + currency9.value.abs()).log10().toNumber();
 var getUm = (level) => Utils.getStepwisePowerSum(level, 1.0000000001, 10, 0);
 var getUR = (level) => Utils.getStepwisePowerSum(level, 2, 10, 0);
