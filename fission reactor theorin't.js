@@ -5,7 +5,7 @@ import { theory } from "./api/Theory";
 import { Utils } from "./api/Utils";
 var id = "axolotl_OuO";
 var name = "fission reactor";
-var description = "fission reactor(and some other things)(ps:this is not nuclear craft)";
+var description = "fission reactor(and some other things)(ps:this is not nuclear craft) full equation: https://cdn.discordapp.com/attachments/926536015718543402/938365946265997342/unknown.png and others u think by urself";
 var authors = "a nub ouo (nubest#1001)";
 var version = 1.12;
 var currency1, currency2, currency3, currency4, currency5, currency6, currency7, currency8, currency9;
