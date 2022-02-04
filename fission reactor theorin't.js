@@ -169,7 +169,7 @@ var init = () => {
     }
     {
         let getDesc = (level) => "(\\text{R}_2)\\text{Overall Molten salt reactor upgrade level:" + level + "}";
-        let getInfo = (level) => "(\\text{R}_2)\\text{OMSR Upgrade power}:}" + getOMSR(level).toString(0);
+        let getInfo = (level) => "(\\text{R}_2)\\text{OMSR Upgrade power:}" + getOMSR(level).toString(0);
         OMSR = theory.createUpgrade(17, currency8, new ExponentialCost(1e20, Math.log2(10)));
         OMSR.getDescription = (_) => Utils.getMath(getDesc(OMSR.level));
         OMSR.getInfo = (amount) => Utils.getMathTo(getInfo(OMSR.level), getInfo(OMSR.level + 1));
