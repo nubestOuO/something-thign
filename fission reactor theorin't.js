@@ -176,9 +176,9 @@ var init = () => {
         OMSR.isAvailable = false;
         OMSR.maxLevel = 100
     }
-    theory.createPublicationUpgrade(0, currency2, 1000);
-    theory.createBuyAllUpgrade(1, currency6, 2);
-    theory.createAutoBuyerUpgrade(2, currency8, 25);
+    theory.createPublicationUpgrade(0, currency2, 10000);
+    theory.createBuyAllUpgrade(1, currency8, 10);
+    theory.createAutoBuyerUpgrade(2, currency6, 25);
     {
         URU = theory.createPermanentUpgrade(3, currency1, new LinearCost(1200000, 0));
         URU.maxLevel = 1;
@@ -187,14 +187,14 @@ var init = () => {
         URU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        NpRU = theory.createPermanentUpgrade(4, currency2, new LinearCost(150000, 0));
+        NpRU = theory.createPermanentUpgrade(4, currency2, new LinearCost(300000, 0));
         NpRU.maxLevel = 1;
         NpRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Neptunium Reactor}");
         NpRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Neptunium Reactor}");
         NpRU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        PuRU = theory.createPermanentUpgrade(5, currency3, new LinearCost(500000, 0));
+        PuRU = theory.createPermanentUpgrade(5, currency3, new LinearCost(1000000, 0));
         PuRU.maxLevel = 1;
         PuRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Plutonium Reactor}");
         PuRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Plutonium Reactor}");
@@ -208,7 +208,7 @@ var init = () => {
         AmRU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        CmRU = theory.createPermanentUpgrade(7, currency5, new LinearCost(800000, 0));
+        CmRU = theory.createPermanentUpgrade(7, currency5, new LinearCost(2000000, 0));
         CmRU.maxLevel = 1;
         CmRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Curium Reactor}");
         CmRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Curium Reactor}");
@@ -222,7 +222,7 @@ var init = () => {
         BkRU.boughtOrRefunded = (_) => updateAvailability()
     }
     {
-        CfRU = theory.createPermanentUpgrade(9, currency7, new LinearCost(9000000, 0));
+        CfRU = theory.createPermanentUpgrade(9, currency7, new LinearCost(16000000, 0));
         CfRU.maxLevel = 1;
         CfRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Californium Reactor}");
         CfRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Californium Reactor}");
@@ -368,7 +368,7 @@ var getPrimaryEquation = () => {
     let result = "P = \\sum DE_s + \\sum RE_s"
     return result;
 }
-var getSecondaryEquation = () => theory.latexSymbol + "=\\max P"
+var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.75}"
 var getQuaternaryEntries = () => {
     if (quaternaryEntries.length == 0)
     {
@@ -391,9 +391,9 @@ var getQuaternaryEntries = () => {
     quaternaryEntries[7].value=currency8.value
     return quaternaryEntries
 }
-var getPublicationMultiplier = (tau) => tau.pow(0.2033);
-var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.2033}";
-var getTau = () => currency9.value.pow(0.99)
+var getPublicationMultiplier = (tau) => tau.pow(0.19);
+var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.19}";
+var getTau = () => currency9.value.pow(0.75)
 var get2DGraphValue = () => currency9.value.sign * (BigNumber.ONE + currency9.value.abs()).log10().toNumber();
 var getUm = (level) => Utils.getStepwisePowerSum(level, 1.0000000001, 10, 0);
 var getUR = (level) => Utils.getStepwisePowerSum(level, 2, 10, 0);
