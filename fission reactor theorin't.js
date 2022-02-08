@@ -368,7 +368,7 @@ var getPrimaryEquation = () => {
     let result = "P = \\sum DE_s + \\sum RE_s"
     return result;
 }
-var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.85}"
+var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.8}"
 var getQuaternaryEntries = () => {
     if (quaternaryEntries.length == 0)
     {
@@ -393,7 +393,7 @@ var getQuaternaryEntries = () => {
 }
 var getPublicationMultiplier = (tau) => tau.pow(0.3);
 var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.3}";
-var getTau = () => currency9.value.pow(0.85)
+var getTau = () => currency9.value.pow(0.8)
 var get2DGraphValue = () => currency9.value.sign * (BigNumber.ONE + currency9.value.abs()).log10().toNumber();
 var getUm = (level) => Utils.getStepwisePowerSum(level, 1.0000000001, 10, 0);
 var getUR = (level) => Utils.getStepwisePowerSum(level, 1.75, 7, 0);
