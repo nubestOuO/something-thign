@@ -145,7 +145,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Cf}_1)\\text{Californium Reactor level:" + level+ "}" 
         let getInfo = (level) => "(\\text{Cf}_1)\\text{Reactor power:}" +getCfR(level).toString(0);
-        CfR = theory.createUpgrade(7, currency7, new ExponentialCost(1, Math.log2(1.6)));
+        CfR = theory.createUpgrade(7, currency7, new ExponentialCost(1, Math.log2(1.65)));
         CfR.getDescription = (_) => Utils.getMath(getDesc(CfR.level));
         CfR.getInfo = (amount) => Utils.getMathTo(getInfo(CfR.level), getInfo(CfR.level + 1));
         CfR.isAvailable = false;
@@ -153,15 +153,15 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Cf}_2)\\text{Californium fuel purifier power:}2^{" + level + "}";
         let getInfo = (level) => "(\\text{Cf}_2)\\text{purifier power:}" + getCfRT(level).toString(0);
-        CfRT = theory.createUpgrade(15, currency8, new ExponentialCost(1, Math.log2(2.8)));
+        CfRT = theory.createUpgrade(15, currency8, new ExponentialCost(1, Math.log2(2.9)));
         CfRT.getDescription = (_) => Utils.getMath(getDesc(CfRT.level));
         CfRT.getInfo = (amount) => Utils.getMathTo(getInfo(CfRT.level), getInfo(CfRT.level + 1));
         CfRT.isAvailable = false;
     }
     {
-        let getDesc = (level) => "(\\text{R}_1)\\text{Overall Pressurized heavy-water reactor level:" + level + "}";
+        let getDesc = (level) => "(\\text{R}_1)\\text{Overall Pressurized heavywater reactor level:" + level + "}";
         let getInfo = (level) => "(\\text{R}_1)\\text{OPHWR power:}" + getOPHWR(level).toString(0);
-        OPHWR = theory.createUpgrade(16, currency8, new ExponentialCost(1e10, Math.log2(4)));
+        OPHWR = theory.createUpgrade(16, currency8, new ExponentialCost(1e10, Math.log2(4.5)));
         OPHWR.getDescription = (_) => Utils.getMath(getDesc(OPHWR.level));
         OPHWR.getInfo = (amount) => Utils.getMathTo(getInfo(OPHWR.level), getInfo(OPHWR.level + 1));
         OPHWR.isAvailable = false;
@@ -170,7 +170,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{R}_2)\\text{Overall Molten salt reactor upgrade level:" + level + "}";
         let getInfo = (level) => "(\\text{R}_2)\\text{OMSR Upgrade power:}" + getOMSR(level).toString(0);
-        OMSR = theory.createUpgrade(17, currency8, new ExponentialCost(1e20, Math.log2(5)));
+        OMSR = theory.createUpgrade(17, currency8, new ExponentialCost(1e20, Math.log2(6)));
         OMSR.getDescription = (_) => Utils.getMath(getDesc(OMSR.level));
         OMSR.getInfo = (amount) => Utils.getMathTo(getInfo(OMSR.level), getInfo(OMSR.level + 1));
         OMSR.isAvailable = false;
@@ -231,13 +231,13 @@ var init = () => {
     theory.setMilestoneCost(new LinearCost(31, 10));
     {
         UDExp = theory.createMilestoneUpgrade(0, 2);
-        UDExp.description = Localization.getUpgradeIncCustomExpDesc("\\text{U}_2", "0.11");
-        UDExp.info = Localization.getUpgradeIncCustomExpInfo("\\text{U}_2", "0.11");
+        UDExp.description = Localization.getUpgradeIncCustomExpDesc("\\text{U}_2", "0.1");
+        UDExp.info = Localization.getUpgradeIncCustomExpInfo("\\text{U}_2", "0.1");
     }
     {
         PHWR=theory.createMilestoneUpgrade(1,1)
-        PHWR.description = Localization.getUpgradeAddTermDesc("\\text{Pressurized heavy-water reactor}")
-        PHWR.info=Localization.getUpgradeAddTermInfo("\\text{Unlock Pressurized heavy-water reactor}")
+        PHWR.description = Localization.getUpgradeAddTermDesc("\\text{Pressurized heavywater reactor}")
+        PHWR.info=Localization.getUpgradeAddTermInfo("\\text{Unlock Pressurized heavywater reactor}")
         PHWR.boughtOrRefunded = (_) => updateAvailability()
         PHWR.canBeRefunded = (_) => MSR.level == 0
     }
@@ -258,6 +258,7 @@ var init = () => {
     achievement8 = theory.createSecretAchievement(7, "E=mc²", "Einstenium amout > 1e10","no", () => currency8.value > BigNumber.from(1e10));
     achievement9 = theory.createSecretAchievement(8, "who on earth will do this", "buy 1 million U_1 level", "professional clicker", () => Um.level>1000000)
     achievement10 = theory.createSecretAchievement(9,"you are half way there", "ONE GIGA CLICKS", "baldy.exe", ()=>Um.level>BigNumber.from(1000000000))
+    achievement11 = theory.createAchievement(10,"The fifth generation","who knows when, the end of the beginning",()=> currency9.value > BigNumber.from(1e125))
 }
 var updateAvailability = () => {
     UR.isAvailable = URU.level > 0;
@@ -368,7 +369,7 @@ var getPrimaryEquation = () => {
     let result = "P = \\sum DE_s + \\sum RE_s"
     return result;
 }
-var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.8}"
+var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.77}"
 var getQuaternaryEntries = () => {
     if (quaternaryEntries.length == 0)
     {
@@ -391,9 +392,9 @@ var getQuaternaryEntries = () => {
     quaternaryEntries[7].value=currency8.value
     return quaternaryEntries
 }
-var getPublicationMultiplier = (tau) => tau.pow(0.3);
-var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.3}";
-var getTau = () => currency9.value.pow(0.8)
+var getPublicationMultiplier = (tau) => tau.pow(0.26);
+var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.26}";
+var getTau = () => currency9.value.pow(0.77)
 var get2DGraphValue = () => currency9.value.sign * (BigNumber.ONE + currency9.value.abs()).log10().toNumber();
 var getUm = (level) => Utils.getStepwisePowerSum(level, 1.0000000001, 10, 0);
 var getUR = (level) => Utils.getStepwisePowerSum(level, 1.75, 7, 0);
@@ -413,5 +414,5 @@ var getAmRT = (level) => BigNumber.TWO.pow(level);
 var getCmRT = (level) => BigNumber.TWO.pow(level);
 var getBkRT = (level) => BigNumber.TWO.pow(level);
 var getCfRT = (level) => BigNumber.TWO.pow(level);
-var getUDExponent = (level) => BigNumber.from(1 + 0.11 * level)
+var getUDExponent = (level) => BigNumber.from(1 + 0.1 * level)
 init();
