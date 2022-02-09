@@ -291,7 +291,7 @@ var tick = (elapsedTime, multiplier) => {
     currency6.value += currency5.value*BigNumber.from(5.67648e-12)*30*dt-currency6.value*BigNumber.from(4.351968e-11)*dt*30
     currency7.value += currency1.value*BigNumber.from(1e-11)*30*dt-currency7.value*BigNumber.from(1.538784e-10)*dt*30
     currency8.value += currency7.value*BigNumber.from(8.938784e-3)*Math.log2(bonus+0.1)*dt*4*Math.log2(bonus+0.1)*Math.log2(bonus+0.1)
-    currency9.value += ((currency1.value)*dt*0.000001+(currency2.value)*dt*10.0+(currency3.value)*dt*62.2+(currency4.value)*dt*317.22+(currency5.value)*dt*315.0+(currency6.value)*dt*10880+(currency7.value)*dt*300000)*(currency8.value+1).pow(1.1)*Math.log2(bonus+1)
+    currency9.value += ((Math.log2(currency1.value))*dt+(currency2.value)*dt*10.0+(currency3.value)*dt*62.2+(currency4.value)*dt*317.22+(currency5.value)*dt*315.0+(currency6.value)*dt*10880+(currency7.value)*dt*300000)*(currency8.value+1).pow(1.1)*Math.log2(bonus+1)
     //Uranium
     currency1.value += currency1.value < UR.level ? 0 : UR.level*0.55*dt*30*(Math.log2(bonus))
     currency2.value += currency1.value < UR.level ? 0 : UR.level*0.06*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
@@ -341,7 +341,7 @@ var tick = (elapsedTime, multiplier) => {
     //californium
     currency6.value += currency7.value < CfR.level ? 0 : CfR.level*0.4*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
     currency7.value += currency7.value < CfR.level ? 0 : CfR.level*0.3*dt*30*(Math.log2(bonus))
-    currency8.value += currency7.value < CfR.level ? 0 : CfR.level*0.2*CfRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
+    currency8.value += currency7.value < CfR.level ? 0 : CfR.level*0.2*CfRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(1+(OMSR.level))
     currency9.value += currency7.value < CfR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BkR.level*CfR.level*BigNumber.from(5e15)*dt*CfRT.level*(Math.log2(bonus))*(1+(OPHWR.level))*(1+(OMSR.level))
     //tweaks decay
     currency1.value += -currency1.value*BigNumber.from(4.1341e-10)*dt*30
@@ -369,7 +369,7 @@ var getPrimaryEquation = () => {
     let result = "P = \\sum DE_s + \\sum RE_s"
     return result;
 }
-var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.77}"
+var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.76}"
 var getQuaternaryEntries = () => {
     if (quaternaryEntries.length == 0)
     {
@@ -392,9 +392,9 @@ var getQuaternaryEntries = () => {
     quaternaryEntries[7].value=currency8.value
     return quaternaryEntries
 }
-var getPublicationMultiplier = (tau) => tau.pow(0.26);
-var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.26}";
-var getTau = () => currency9.value.pow(0.77)
+var getPublicationMultiplier = (tau) => tau.pow(0.256);
+var getPublicationMultiplierFormula = (symbol) => symbol+"^{0.256}";
+var getTau = () => currency9.value.pow(0.76)
 var get2DGraphValue = () => currency9.value.sign * (BigNumber.ONE + currency9.value.abs()).log10().toNumber();
 var getUm = (level) => Utils.getStepwisePowerSum(level, 1.0000000001, 10, 0);
 var getUR = (level) => Utils.getStepwisePowerSum(level, 1.75, 7, 0);
@@ -403,7 +403,7 @@ var getPuR = (level) => Utils.getStepwisePowerSum(level, 2.75, 7, 0);
 var getAmR = (level) => Utils.getStepwisePowerSum(level, 2.8, 7, 0);
 var getCmR = (level) => Utils.getStepwisePowerSum(level, 2.8, 6, 0);
 var getBkR = (level) => Utils.getStepwisePowerSum(level, 3.3, 5, 0);
-var getCfR = (level) => Utils.getStepwisePowerSum(level, 3.35, 5, 0);
+var getCfR = (level) => Utils.getStepwisePowerSum(level, 3.35, 5.5, 0);
 var getOPHWR = (level) => Utils.getStepwisePowerSum(level,2,10,0)
 var getOMSR = (level) => Utils.getStepwisePowerSum(level,2,10,0)
 var getUD = (level) => BigNumber.TWO.pow(level);
