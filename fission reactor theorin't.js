@@ -177,8 +177,8 @@ var init = () => {
         OMSR.maxLevel = 1000
     }
     theory.createPublicationUpgrade(0, currency2, 10000);
-    theory.createBuyAllUpgrade(1, currency8, 10);
-    theory.createAutoBuyerUpgrade(2, currency6, 2);
+    theory.createBuyAllUpgrade(1, currency6, 40);
+    theory.createAutoBuyerUpgrade(2, currency8, 7.5);
     {
         URU = theory.createPermanentUpgrade(3, currency1, new LinearCost(1200000, 0));
         URU.maxLevel = 1;
@@ -258,7 +258,7 @@ var init = () => {
     achievement8 = theory.createSecretAchievement(7, "E=mc²", "Einstenium amout > 1e10","no", () => currency8.value > BigNumber.from(1e10));
     achievement9 = theory.createSecretAchievement(8, "who on earth will do this", "buy 1 million U_1 level", "professional clicker", () => Um.level>1000000)
     achievement10 = theory.createSecretAchievement(9,"you are half way there", "ONE GIGA CLICKS", "baldy.exe", ()=>Um.level>BigNumber.from(1000000000))
-    achievement11 = theory.createAchievement(10,"The fifth generation","who knows when, the end of the beginning",()=> currency9.value > BigNumber.from(1e125))
+    achievement11 = theory.createSecretAchievement(10,"The fifth generation","who knows when, the end of the beginning","the end...or is it?",()=> currency9.value > BigNumber.from(1e125))
 }
 var updateAvailability = () => {
     UR.isAvailable = URU.level > 0;
