@@ -49,7 +49,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{U}_3)\\text{Uranium Reactor level:" + level+ "}"
         let getInfo = (level) => "(\\text{U}_3)\\text{Reactor power:}" +getUR(level).toString(0);
-        UR = theory.createUpgrade(1, currency1, new ExponentialCost(1, Math.log2(1.3)));
+        UR = theory.createUpgrade(1, currency1, new ExponentialCost(1, Math.log2(1.3)*0.9968));
         UR.getDescription = (_) => Utils.getMath(getDesc(UR.level));
         UR.getInfo = (amount) => Utils.getMathTo(getInfo(UR.level), getInfo(UR.level + 1));
         UR.isAvailable = false;
@@ -57,7 +57,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{U}_4)\\text{Uranium fuel purifier power:}2^{" + level + "}";
         let getInfo = (level) => "(\\text{U}_4)\\text{purifier power:}" +getURT(level).toString(0);
-        URT = theory.createUpgrade(9, currency2, new ExponentialCost(1, Math.log2(3.3)));
+        URT = theory.createUpgrade(9, currency2, new ExponentialCost(1, Math.log2(3.3)*0.997));
         URT.getDescription = (_) => Utils.getMath(getDesc(URT.level));
         URT.getInfo = (amount) => Utils.getMathTo(getInfo(URT.level), getInfo(URT.level + 1));
         URT.isAvailable = false;
@@ -65,7 +65,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Np}_1)\\text{Neptunium Reactor level:" + level+ "}"
         let getInfo = (level) => "(\\text{Np}_1)\\text{Reactor power:}" +getNpR(level).toString(0);
-        NpR= theory.createUpgrade(2, currency2, new ExponentialCost(1, Math.log2(1.7)));
+        NpR= theory.createUpgrade(2, currency2, new ExponentialCost(1, Math.log2(1.7)*0.9972));
         NpR.getDescription = (_) => Utils.getMath(getDesc(NpR.level));
         NpR.getInfo = (amount) => Utils.getMathTo(getInfo(NpR.level), getInfo(NpR.level + 1));
         NpR.isAvailable = false;
@@ -73,7 +73,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Np}_2)\\text{Neptunium fuel purifier power:}2^{" + level + "}";
         let getInfo = (level) => "(\\text{Np}_2)\\text{purifier power:}" + getNpRT(level).toString(0);
-        NpRT= theory.createUpgrade(10, currency3, new ExponentialCost(1, Math.log2(3.9)));
+        NpRT= theory.createUpgrade(10, currency3, new ExponentialCost(1, Math.log2(3.9)*0.9973));
         NpRT.getDescription = (_) => Utils.getMath(getDesc(NpRT.level));
         NpRT.getInfo = (amount) => Utils.getMathTo(getInfo(NpRT.level), getInfo(NpRT.level + 1));
         NpRT.isAvailable = false;
@@ -81,7 +81,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Pu}_1)\\text{Plutonium Reactor level:" + level+ "}"
         let getInfo = (level) => "(\\text{Pu}_1)\\text{Reactor power:}" +getPuR(level).toString(0);
-        PuR = theory.createUpgrade(3, currency3, new ExponentialCost(1, Math.log2(1.7)));
+        PuR = theory.createUpgrade(3, currency3, new ExponentialCost(1, Math.log2(1.7)*0.9979));
         PuR.getDescription = (_) => Utils.getMath(getDesc(PuR.level));
         PuR.getInfo = (amount) => Utils.getMathTo(getInfo(PuR.level), getInfo(PuR.level + 1));
         PuR.isAvailable = false;
@@ -89,7 +89,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Pu}_2)\\text{Plutonium fuel purifier power:}2^{" + level + "}";
         let getInfo = (level) => "(\\text{Pu}_2)\\text{purifier power:}" + getPuRT(level).toString(0);
-        PuRT = theory.createUpgrade(11, currency4, new ExponentialCost(1, Math.log2(4.9)));
+        PuRT = theory.createUpgrade(11, currency4, new ExponentialCost(1, Math.log2(4.9)*0.998));
         PuRT.getDescription = (_) => Utils.getMath(getDesc(PuRT.level));
         PuRT.getInfo = (amount) => Utils.getMathTo(getInfo(PuRT.level), getInfo(PuRT.level + 1));
         PuRT.isAvailable = false;
@@ -97,7 +97,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Am}_1)\\text{Americium Reactor level:" + level+ "}"
         let getInfo = (level) => "(\\text{Am}_1)\\text{Reactor power:}" +getAmR(level).toString(0);
-        AmR = theory.createUpgrade(4, currency4, new ExponentialCost(1, Math.log2(1.7)));
+        AmR = theory.createUpgrade(4, currency4, new ExponentialCost(1, Math.log2(1.7)*0.9982));
         AmR.getDescription = (_) => Utils.getMath(getDesc(AmR.level));
         AmR.getInfo = (amount) => Utils.getMathTo(getInfo(AmR.level), getInfo(AmR.level + 1));
         AmR.isAvailable = false;
@@ -105,7 +105,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Am}_2)\\text{Americium fuel purifier power:}2^{" + level + "}";
         let getInfo = (level) => "(\\text{Am}_2)\\text{purifier power:}" + getAmRT(level).toString(0);
-        AmRT = theory.createUpgrade(12, currency5, new ExponentialCost(1, Math.log2(3.9)));
+        AmRT = theory.createUpgrade(12, currency5, new ExponentialCost(1, Math.log2(3.9)*0.9979));
         AmRT.getDescription = (_) => Utils.getMath(getDesc(AmRT.level));
         AmRT.getInfo = (amount) => Utils.getMathTo(getInfo(AmRT.level), getInfo(AmRT.level + 1));
         AmRT.isAvailable = false;
@@ -113,7 +113,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Cm}_1)\\text{Curium Reactor level:" + level+ "}" 
         let getInfo = (level) => "(\\text{Cm}_1)\\text{Reactor power:}" +getCmR(level).toString(0);
-        CmR = theory.createUpgrade(5, currency5, new ExponentialCost(1, Math.log2(1.7)));
+        CmR = theory.createUpgrade(5, currency5, new ExponentialCost(1, Math.log2(1.7)*0.998));
         CmR.getDescription = (_) => Utils.getMath(getDesc(CmR.level));
         CmR.getInfo = (amount) => Utils.getMathTo(getInfo(CmR.level), getInfo(CmR.level + 1));
         CmR.isAvailable = false;
@@ -121,7 +121,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Cm}_2)\\text{Curium fuel purifier power:}2^{" + level + "}";
         let getInfo = (level) => "(\\text{Cm}_2)\\text{purifier power:}" + getCmRT(level).toString(0);
-        CmRT = theory.createUpgrade(13, currency6, new ExponentialCost(1, Math.log2(2.9)));
+        CmRT = theory.createUpgrade(13, currency6, new ExponentialCost(1, Math.log2(2.9)*0.9981));
         CmRT.getDescription = (_) => Utils.getMath(getDesc(CmR.level));
         CmRT.getInfo = (amount) => Utils.getMathTo(getInfo(CmR.level), getInfo(CmR.level + 1));
         CmRT.isAvailable = false;
@@ -129,7 +129,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Bk}_1)\\text{Berkelium Reactor level:" + level+ "}"
         let getInfo = (level) => "(\\text{Bk}_1)\\text{Reactor power:}" +getBkR(level).toString(0);
-        BkR = theory.createUpgrade(6, currency6, new ExponentialCost(1, Math.log2(1.7)));
+        BkR = theory.createUpgrade(6, currency6, new ExponentialCost(1, Math.log2(1.7)*0.998));
         BkR.getDescription = (_) => Utils.getMath(getDesc(BkR.level));
         BkR.getInfo = (amount) => Utils.getMathTo(getInfo(BkR.level), getInfo(BkR.level + 1));
         BkR.isAvailable = false;
@@ -137,7 +137,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Bk}_2)\\text{Berkelium fuel purifier power:}2^{" + level + "}";
         let getInfo = (level) => "(\\text{Bk}_2)\\text{purifier power:}" + getBkRT(level).toString(0);
-        BkRT = theory.createUpgrade(14, currency7, new ExponentialCost(1, Math.log2(3.9)));
+        BkRT = theory.createUpgrade(14, currency7, new ExponentialCost(1, Math.log2(3.9)*0.9977));
         BkRT.getDescription = (_) => Utils.getMath(getDesc(BkR.level));
         BkRT.getInfo = (amount) => Utils.getMathTo(getInfo(BkR.level), getInfo(BkR.level + 1));
         BkRT.isAvailable = false;
@@ -145,7 +145,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Cf}_1)\\text{Californium Reactor level:" + level+ "}" 
         let getInfo = (level) => "(\\text{Cf}_1)\\text{Reactor power:}" +getCfR(level).toString(0);
-        CfR = theory.createUpgrade(7, currency7, new ExponentialCost(1, Math.log2(1.65)));
+        CfR = theory.createUpgrade(7, currency7, new ExponentialCost(1, Math.log2(1.65)*0.9979));
         CfR.getDescription = (_) => Utils.getMath(getDesc(CfR.level));
         CfR.getInfo = (amount) => Utils.getMathTo(getInfo(CfR.level), getInfo(CfR.level + 1));
         CfR.isAvailable = false;
@@ -153,7 +153,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{Cf}_2)\\text{Californium fuel purifier power:}2^{" + level + "}";
         let getInfo = (level) => "(\\text{Cf}_2)\\text{purifier power:}" + getCfRT(level).toString(0);
-        CfRT = theory.createUpgrade(15, currency8, new ExponentialCost(1, Math.log2(2.9)));
+        CfRT = theory.createUpgrade(15, currency8, new ExponentialCost(1, Math.log2(2.9)*0.9978));
         CfRT.getDescription = (_) => Utils.getMath(getDesc(CfRT.level));
         CfRT.getInfo = (amount) => Utils.getMathTo(getInfo(CfRT.level), getInfo(CfRT.level + 1));
         CfRT.isAvailable = false;
@@ -161,7 +161,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{R}_1)\\text{Overall Pressurized heavywater reactor level:" + level + "}";
         let getInfo = (level) => "(\\text{R}_1)\\text{OPHWR power:}" + getOPHWR(level).toString(0);
-        OPHWR = theory.createUpgrade(16, currency8, new ExponentialCost(1e10, Math.log2(4.5)));
+        OPHWR = theory.createUpgrade(16, currency8, new ExponentialCost(1e10, Math.log2(4.5)*0.9));
         OPHWR.getDescription = (_) => Utils.getMath(getDesc(OPHWR.level));
         OPHWR.getInfo = (amount) => Utils.getMathTo(getInfo(OPHWR.level), getInfo(OPHWR.level + 1));
         OPHWR.isAvailable = false;
@@ -170,7 +170,7 @@ var init = () => {
     {
         let getDesc = (level) => "(\\text{R}_2)\\text{Overall Molten salt reactor upgrade level:" + level + "}";
         let getInfo = (level) => "(\\text{R}_2)\\text{OMSR Upgrade power:}" + getOMSR(level).toString(0);
-        OMSR = theory.createUpgrade(17, currency8, new ExponentialCost(1e20, Math.log2(6)));
+        OMSR = theory.createUpgrade(17, currency8, new ExponentialCost(1e20, Math.log2(6)*0.9));
         OMSR.getDescription = (_) => Utils.getMath(getDesc(OMSR.level));
         OMSR.getInfo = (amount) => Utils.getMathTo(getInfo(OMSR.level), getInfo(OMSR.level + 1));
         OMSR.isAvailable = false;
