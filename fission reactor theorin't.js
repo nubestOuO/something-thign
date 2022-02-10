@@ -9,7 +9,7 @@ var description = "fission reactor(and some other things)(ps:this is not nuclear
 var authors = "a nub ouo (nubest#1001)";
 var version = 1.14;
 var currency1, currency2, currency3, currency4, currency5, currency6, currency7, currency8, currency9;
-var Um ,UD, URU, UR, NpRU, NpR, PuRU, PuR, AmRU, AmR, CmRU, CmR, BkRU, BkR, CfRU, CfR, URT, NpRT, PuRT, AmRT, CmRT, BkRT, CfRT,OPHWR, OMSR;
+var Um ,UD, URU, UR, NpRU, NpR, PuRU, PuR, AmRU, AmR, CmRU, CmR, BkRU, BkR, CfRU, CfR, URT, NpRT, PuRT, AmRT, CmRT, BkRT, CfRT,OPHWR, OMSR,OI;
 var UDExp, PHWR, MSR;
 quaternaryEntries = [];
 var isCurrencyVisible = (index) => index == 8;
@@ -176,6 +176,13 @@ var init = () => {
         OMSR.isAvailable = false;
         OMSR.maxLevel = 1000
     }
+    {
+        let getDesc = (level) => "(\\text{R}_3)\\text{Overall power production level:}2^{" + level + "}";
+        let getInfo = (level) => "(\\text{R}_3)\\text{R_3 power:}" + getOI(level).toString(0);
+        OI = theory.createUpgrade(18, currency9, new ExponentialCost(1e55, Math.log2(5)));
+        OI.getDescription = (_) => Utils.getMath(getDesc(OI.level));
+        OI.getInfo = (amount) => Utils.getMathTo(getInfo(OI.level), getInfo(OI.level + 1));
+    }
     theory.createPublicationUpgrade(0, currency2, 10000);
     theory.createBuyAllUpgrade(1, currency6, 40);
     theory.createAutoBuyerUpgrade(2, currency8, 7.5);
@@ -248,6 +255,7 @@ var init = () => {
         MSR.boughtOrRefunded = (_) => updateAvailability()
         MSR.isAvailable = false;
     }
+
     achievement1 = theory.createSecretAchievement(0, "Warm Green Glow", "Unlock Uranium Reactor", "Unlock Uranium Reactor", () => URU.level > 0);
     achievement2 = theory.createSecretAchievement(1, "Sweet Neptune", "Unlock Neptunium Reactor", "Unlock Neptunium Reactor", () => NpRU.level > 0);
     achievement3 = theory.createSecretAchievement(2, "Criticality", "Unlock Plutonium Reactor", "Unlock Plutonium Reactor", () => PuRU.level > 0);
@@ -291,57 +299,57 @@ var tick = (elapsedTime, multiplier) => {
     currency6.value += currency5.value*BigNumber.from(5.67648e-12)*30*dt-currency6.value*BigNumber.from(4.351968e-11)*dt*30
     currency7.value += currency1.value*BigNumber.from(1e-11)*30*dt-currency7.value*BigNumber.from(1.538784e-10)*dt*30
     currency8.value += currency7.value*BigNumber.from(8.938784e-4)*Math.log2(bonus)*dt*Math.log2(bonus)*Math.log2(bonus)
-    currency9.value += ((currency2.value)*dt*1+(currency3.value)*dt*6.22+(currency4.value)*dt*31.722+(currency5.value)*dt*31.5+(currency6.value)*dt*10880+(currency7.value)*dt*40000)*(currency8.value+1).pow(1.1)*Math.log2(bonus+1)
+    currency9.value += ((currency2.value)*dt*1+(currency3.value)*dt*6.22+(currency4.value)*dt*31.722+(currency5.value)*dt*31.5+(currency6.value)*dt*10880+(currency7.value)*dt*400000)*(currency8.value+1).pow(1.1)*(Math.log2(bonus).pow(3.5))*(getOI(OI.level))
     //Uranium
-    currency1.value += currency1.value < UR.level ? 0 : UR.level*0.55*dt*30*(Math.log2(bonus))
-    currency2.value += currency1.value < UR.level ? 0 : UR.level*0.06*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency3.value += currency1.value < UR.level ? 0 : UR.level*0.02*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency4.value += currency1.value < UR.level ? 0 : UR.level*0.006*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency5.value += currency1.value < UR.level ? 0 : UR.level*0.005*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency6.value += currency1.value < UR.level ? 0 : UR.level*0.00003*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency7.value += currency1.value < UR.level ? 0 : UR.level*0.00001*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency8.value += currency1.value < UR.level ? 0 : UR.level*0.0000002*URT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
+    currency1.value += currency1.value < UR.level ? 0 : UR.level*0.55*dt*30*(Math.log2(bonus))*(Math.log2(bonus))
+    currency2.value += currency1.value < UR.level ? 0 : UR.level*0.06*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency3.value += currency1.value < UR.level ? 0 : UR.level*0.02*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency4.value += currency1.value < UR.level ? 0 : UR.level*0.006*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency5.value += currency1.value < UR.level ? 0 : UR.level*0.005*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency6.value += currency1.value < UR.level ? 0 : UR.level*0.00003*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency7.value += currency1.value < UR.level ? 0 : UR.level*0.00001*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency8.value += currency1.value < UR.level ? 0 : UR.level*0.0000002*URT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
     currency9.value += currency1.value < UR.level ? 0 : UR.level*dt*BigNumber.from(2.22517e3)*URT.level*(Math.log2(bonus))*(1+(OPHWR.level))*(1+(OMSR.level))
     //neptunium
-    currency1.value += currency2.value < NpR.level ? 0 : NpR.level*0.1*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency2.value += currency2.value < NpR.level ? 0 : NpR.level*0.412*dt*30*(Math.log2(bonus))
-    currency3.value += currency2.value < NpR.level ? 0 : NpR.level*0.165*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency4.value += currency2.value < NpR.level ? 0 : NpR.level*0.014*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency5.value += currency2.value < NpR.level ? 0 : NpR.level*0.016*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency6.value += currency2.value < NpR.level ? 0 : NpR.level*0.001*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency7.value += currency2.value < NpR.level ? 0 : NpR.level*0.008*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency8.value += currency2.value < NpR.level ? 0 : NpR.level*0.001*NpRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
+    currency1.value += currency2.value < NpR.level ? 0 : NpR.level*0.1*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency2.value += currency2.value < NpR.level ? 0 : NpR.level*0.412*dt*30*(Math.log2(bonus))*(Math.log2(bonus))
+    currency3.value += currency2.value < NpR.level ? 0 : NpR.level*0.165*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency4.value += currency2.value < NpR.level ? 0 : NpR.level*0.014*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency5.value += currency2.value < NpR.level ? 0 : NpR.level*0.016*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency6.value += currency2.value < NpR.level ? 0 : NpR.level*0.001*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency7.value += currency2.value < NpR.level ? 0 : NpR.level*0.008*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency8.value += currency2.value < NpR.level ? 0 : NpR.level*0.001*NpRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
     currency9.value += currency2.value < NpR.level ? 0 : UR.level*NpR.level*dt*BigNumber.from(2.23124e5)*NpRT.level*(Math.log2(bonus))*(1+(OPHWR.level))*(1+(OMSR.level))
     //plutonium
-    currency3.value += currency3.value < PuR.level ? 0 : PuR.level*0.3*dt*30*(Math.log2(bonus))
-    currency4.value += currency3.value < PuR.level ? 0 : PuR.level*0.22*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency5.value += currency3.value < PuR.level ? 0 : PuR.level*0.29*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency6.value += currency3.value < PuR.level ? 0 : PuR.level*0.01*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency7.value += currency3.value < PuR.level ? 0 : PuR.level*0.0008*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency8.value += currency3.value < PuR.level ? 0 : PuR.level*0.003*PuRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
+    currency3.value += currency3.value < PuR.level ? 0 : PuR.level*0.3*dt*30*(Math.log2(bonus))*(Math.log2(bonus))
+    currency4.value += currency3.value < PuR.level ? 0 : PuR.level*0.22*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency5.value += currency3.value < PuR.level ? 0 : PuR.level*0.29*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency6.value += currency3.value < PuR.level ? 0 : PuR.level*0.01*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency7.value += currency3.value < PuR.level ? 0 : PuR.level*0.0008*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency8.value += currency3.value < PuR.level ? 0 : PuR.level*0.003*PuRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
     currency9.value += currency3.value < PuR.level ? 0 : UR.level*NpR.level*PuR.level*BigNumber.from(2.089e6)*dt*PuRT.level*(Math.log2(bonus))*(1+(OPHWR.level))*(1+(OMSR.level))
     //americium
-    currency4.value += currency4.value < AmR.level ? 0 : AmR.level*0.4*dt*30*(Math.log2(bonus))
-    currency5.value += currency4.value < AmR.level ? 0 : AmR.level*0.26*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency6.value += currency4.value < AmR.level ? 0 : AmR.level*0.03*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency7.value += currency4.value < AmR.level ? 0 : AmR.level*0.02*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency8.value += currency4.value < AmR.level ? 0 : AmR.level*0.08*AmRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
+    currency4.value += currency4.value < AmR.level ? 0 : AmR.level*0.4*dt*30*(Math.log2(bonus))*(Math.log2(bonus))
+    currency5.value += currency4.value < AmR.level ? 0 : AmR.level*0.26*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency6.value += currency4.value < AmR.level ? 0 : AmR.level*0.03*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency7.value += currency4.value < AmR.level ? 0 : AmR.level*0.02*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency8.value += currency4.value < AmR.level ? 0 : AmR.level*0.08*AmRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
     currency9.value += currency4.value < AmR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*BigNumber.from(4.42e7)*dt*AmRT.level*(Math.log2(bonus))*(1+(OPHWR.level))*(1+(OMSR.level))
     //curium
-    currency5.value += currency5.value < CmR.level ? 0 : CmR.level*0.34*dt*30*(Math.log2(bonus))
-    currency6.value += currency5.value < CmR.level ? 0 : CmR.level*0.5*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency7.value += currency5.value < CmR.level ? 0 : CmR.level*0.1*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency8.value += currency5.value < CmR.level ? 0 : CmR.level*0.7*CmRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
+    currency5.value += currency5.value < CmR.level ? 0 : CmR.level*0.34*dt*30*(Math.log2(bonus))*(Math.log2(bonus))
+    currency6.value += currency5.value < CmR.level ? 0 : CmR.level*0.5*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency7.value += currency5.value < CmR.level ? 0 : CmR.level*0.1*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency8.value += currency5.value < CmR.level ? 0 : CmR.level*0.7*CmRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
     currency9.value += currency5.value < CmR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BigNumber.from(2.3e8)*dt*CmRT.level*(Math.log2(bonus))*(1+(OPHWR.level))*(1+(OMSR.level))
     //berkelium
-    currency6.value += currency6.value < BkR.level ? 0 : BkR.level*0.4*dt*30*(Math.log2(bonus))
-    currency7.value += currency6.value < BkR.level ? 0 : BkR.level*0.55*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency8.value += currency6.value < BkR.level ? 0 : BkR.level*0.25*BkRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
+    currency6.value += currency6.value < BkR.level ? 0 : BkR.level*0.4*dt*30*(Math.log2(bonus))*(Math.log2(bonus))
+    currency7.value += currency6.value < BkR.level ? 0 : BkR.level*0.55*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency8.value += currency6.value < BkR.level ? 0 : BkR.level*0.25*BkRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
     currency9.value += currency6.value < BkR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BkR.level*BigNumber.from(2e9)*dt*BkRT.level*(Math.log2(bonus))*(1+(OPHWR.level))*(1+(OMSR.level))
     //californium
-    currency6.value += currency7.value < CfR.level ? 0 : CfR.level*0.4*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))
-    currency7.value += currency7.value < CfR.level ? 0 : CfR.level*0.3*dt*30*(Math.log2(bonus))
-    currency8.value += currency7.value < CfR.level ? 0 : CfR.level*0.2*CfRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(1+(OMSR.level))
+    currency6.value += currency7.value < CfR.level ? 0 : CfR.level*0.4*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
+    currency7.value += currency7.value < CfR.level ? 0 : CfR.level*0.3*dt*30*(Math.log2(bonus))*(Math.log2(bonus))
+    currency8.value += currency7.value < CfR.level ? 0 : CfR.level*0.2*CfRT.level*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(1+(OMSR.level))*(Math.log2(bonus))
     currency9.value += currency7.value < CfR.level ? 0 : UR.level*NpR.level*PuR.level*AmR.level*CmR.level*BkR.level*CfR.level*BigNumber.from(5e10)*dt*CfRT.level*(Math.log2(bonus))*(1+(OPHWR.level))*(1+(OMSR.level))
     //tweaks decay
     currency1.value += -currency1.value*BigNumber.from(4.1341e-10)*dt*30
@@ -414,5 +422,6 @@ var getAmRT = (level) => BigNumber.TWO.pow(level);
 var getCmRT = (level) => BigNumber.TWO.pow(level);
 var getBkRT = (level) => BigNumber.TWO.pow(level);
 var getCfRT = (level) => BigNumber.TWO.pow(level);
+var getOI = (level) => BigNumber.SIX.pow(level)
 var getUDExponent = (level) => BigNumber.from(1 + 0.1 * level)
 init();
