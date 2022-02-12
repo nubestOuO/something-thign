@@ -299,7 +299,7 @@ var tick = (elapsedTime, multiplier) => {
     currency6.value += currency5.value*BigNumber.from(5.67648e-12)*30*dt-currency6.value*BigNumber.from(4.351968e-11)*dt*30
     currency7.value += currency1.value*BigNumber.from(1e-11)*30*dt-currency7.value*BigNumber.from(1.538784e-10)*dt*30
     currency8.value += currency7.value*BigNumber.from(8.938784e-4)*Math.log2(bonus)*dt*Math.log2(bonus)*Math.log2(bonus)
-    currency9.value += ((currency2.value)*dt*1+(currency3.value)*dt*6.22+(currency4.value)*dt*31.722+(currency5.value)*dt*31.5+(currency6.value)*dt*10880+(currency7.value)*dt*400000)*(currency8.value+1).pow(1.1)*((Math.log2(bonus)).pow(3.5))*(getOI(OI.level))
+    currency9.value += ((currency2.value)*dt*1+(currency3.value)*dt*6.22+(currency4.value)*dt*31.722+(currency5.value)*dt*31.5+(currency6.value)*dt*10880+(currency7.value)*dt*400000)*(currency8.value+1).pow(1.1)*BigNumber.from(Math.log2(bonus)).pow(3.5)*(getOI(OI.level))
     //Uranium
     currency1.value += currency1.value < UR.level ? 0 : UR.level*0.55*dt*30*(Math.log2(bonus))*(Math.log2(bonus))
     currency2.value += currency1.value < UR.level ? 0 : UR.level*0.06*dt*30*(1+(OPHWR.level))*(1+(OMSR.level))*(Math.log2(bonus))
