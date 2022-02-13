@@ -7,7 +7,7 @@ import { Utils } from "./api/Utils";
 var id = "axolotl_OuO";
 var name = "fission reactor";
 var description = "fission reactor(and some other things)(ps:this is not nuclear craft) full equation: https://cdn.discordapp.com/attachments/926536015718543402/938365946265997342/unknown.png and others u think by urself";
-var authors = "a nub ouo (nubest#1001)";
+var authors = "a nub ouo (nubest#1001) \n\n contributors \n\n Alex27#6175 \n 71~073~#7380";
 var version = 1.14;
 
 var currencies = new Array(9);
