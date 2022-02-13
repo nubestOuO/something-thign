@@ -13,10 +13,13 @@ var version = 1.14;
 var currencies = new Array(9);
 var currencies_names = ["U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "P"]
 
-var Um ,UD, URU, NpRU, PuRU, AmRU, CmRU, BkRU, CfRU;
+var Um ,UD
 
 var reactors = new Array(7);
 var reactors_puri = new Array(7);
+
+var URU, NpRU, PuRU, AmRU, CmRU, BkRU, CfRU;
+var reactors_perm = new Array(7);
 
 var OPHWR, OMSR,OI;
 var UDExp, PHWR, MSR;
@@ -74,7 +77,7 @@ var init = () => {
             reactors_puri[i].isAvailable = false;
         }
     }
-    
+
     {
         let getDesc = (level) => "(\\text{R}_1)\\text{Overall Pressurized heavywater reactor level:" + level + "}";
         let getInfo = (level) => "(\\text{R}_1)\\text{OPHWR power:}" + getOPHWR(level).toString(0);
@@ -100,58 +103,22 @@ var init = () => {
         OI.getDescription = (_) => Utils.getMath(getDesc(OI.level));
         OI.getInfo = (amount) => Utils.getMathTo(getInfo(OI.level), getInfo(OI.level + 1));
     }
+
     theory.createPublicationUpgrade(0, currencies[1], 10000);
     theory.createBuyAllUpgrade(1, currencies[5], 40);
     theory.createAutoBuyerUpgrade(2, currencies[7], 7.5);
+
     {
-        URU = theory.createPermanentUpgrade(3, currencies[0], new LinearCost(1200000, 0));
-        URU.maxLevel = 1;
-        URU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Uranium Reactor}");
-        URU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Uranium Reactor}");
-        URU.boughtOrRefunded = (_) => updateAvailability();
+        let lin_consts = [1200000, 900000, 10000000, 80000000, 2000000, 5000000, 160000000000]
+        for (let i = 0; i < 7; ++i) {
+            reactors_perm[i] = theory.createPermanentUpgrade(i + 3, currencies[i], LinearCost(lin_consts[i], 0));
+            reactors_perm[i].maxLevel = 1;
+            reactors_perm[i].getDescription = (_) => Localization.getUpgradeUnlockDesc(`\\text{${names[i]} Reactor}`);
+            reactors_perm[i].getInfo = (_) => Localization.getUpgradeUnlockInfo(`\\text{${names[i]} Reactor}`);
+            reactors_perm[i].boughtOrRefunded = (_) => updateAvailability();
+        }
     }
-    {
-        NpRU = theory.createPermanentUpgrade(4, currencies[1], new LinearCost(900000, 0));
-        NpRU.maxLevel = 1;
-        NpRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Neptunium Reactor}");
-        NpRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Neptunium Reactor}");
-        NpRU.boughtOrRefunded = (_) => updateAvailability();
-    }
-    {
-        PuRU = theory.createPermanentUpgrade(5, currencies[2], new LinearCost(10000000, 0));
-        PuRU.maxLevel = 1;
-        PuRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Plutonium Reactor}");
-        PuRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Plutonium Reactor}");
-        PuRU.boughtOrRefunded = (_) => updateAvailability();
-    }
-    {
-        AmRU = theory.createPermanentUpgrade(6, currencies[3], new LinearCost(80000000, 0));
-        AmRU.maxLevel = 1;
-        AmRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Americium Reactor}");
-        AmRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Americium Reactor}");
-        AmRU.boughtOrRefunded = (_) => updateAvailability();
-    }
-    {
-        CmRU = theory.createPermanentUpgrade(7, currencies[4], new LinearCost(2000000, 0));
-        CmRU.maxLevel = 1;
-        CmRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Curium Reactor}");
-        CmRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Curium Reactor}");
-        CmRU.boughtOrRefunded = (_) => updateAvailability();
-    }
-    {
-        BkRU = theory.createPermanentUpgrade(8, currencies[5], new LinearCost(5000000, 0));
-        BkRU.maxLevel = 1;
-        BkRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Berkelium Reactor}");
-        BkRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Berkelium Reactor}");
-        BkRU.boughtOrRefunded = (_) => updateAvailability();
-    }
-    {
-        CfRU = theory.createPermanentUpgrade(9, currencies[6], new LinearCost(160000000000, 0));
-        CfRU.maxLevel = 1;
-        CfRU.getDescription = (_) => Localization.getUpgradeUnlockDesc("\\text{Californium Reactor}");
-        CfRU.getInfo = (_) => Localization.getUpgradeUnlockInfo("\\text{Californium Reactor}");
-        CfRU.boughtOrRefunded = (_) => updateAvailability();
-    }
+
     theory.setMilestoneCost(new LinearCost(31, 10));
     {
         UDExp = theory.createMilestoneUpgrade(0, 2);
@@ -173,33 +140,33 @@ var init = () => {
         MSR.isAvailable = false;
     }
 
-    achievement1 = theory.createSecretAchievement(0, "Warm Green Glow", "Unlock Uranium Reactor", "Unlock Uranium Reactor", () => URU.level > 0);
-    achievement2 = theory.createSecretAchievement(1, "Sweet Neptune", "Unlock Neptunium Reactor", "Unlock Neptunium Reactor", () => NpRU.level > 0);
-    achievement3 = theory.createSecretAchievement(2, "Criticality", "Unlock Plutonium Reactor", "Unlock Plutonium Reactor", () => PuRU.level > 0);
-    achievement4 = theory.createSecretAchievement(3, "In Physics We Trust", "Unlock Americium Reactor", "Unlock Americium Reactor", () => AmRU.level > 0);
-    achievement5 = theory.createSecretAchievement(4, "Curious Marie", "Unlock Curium Reactor", "Unlock Curium Reactor", () => CmRU.level > 0);
-    achievement6 = theory.createSecretAchievement(5, "Made in Alameda", "Unlock Berkelium Reactor", "Unlock Berkelium Reactor", () => BkRU.level > 0);
-    achievement7 = theory.createSecretAchievement(6, "California Dreamin'", "Unlock Californium Reactor", "Unlock Californium Reactor", () => CfRU.level > 0);
+    achievement1 = theory.createSecretAchievement(0, "Warm Green Glow", "Unlock Uranium Reactor", "Unlock Uranium Reactor", () => reactors_perm[0].level > 0);
+    achievement2 = theory.createSecretAchievement(1, "Sweet Neptune", "Unlock Neptunium Reactor", "Unlock Neptunium Reactor", () => reactors_perm[1].level > 0);
+    achievement3 = theory.createSecretAchievement(2, "Criticality", "Unlock Plutonium Reactor", "Unlock Plutonium Reactor", () => reactors_perm[2].level > 0);
+    achievement4 = theory.createSecretAchievement(3, "In Physics We Trust", "Unlock Americium Reactor", "Unlock Americium Reactor", () => reactors_perm[3].level > 0);
+    achievement5 = theory.createSecretAchievement(4, "Curious Marie", "Unlock Curium Reactor", "Unlock Curium Reactor", () => reactors_perm[4].level > 0);
+    achievement6 = theory.createSecretAchievement(5, "Made in Alameda", "Unlock Berkelium Reactor", "Unlock Berkelium Reactor", () => reactors_perm[5].level > 0);
+    achievement7 = theory.createSecretAchievement(6, "California Dreamin'", "Unlock Californium Reactor", "Unlock Californium Reactor", () => reactors_perm[6].level > 0);
     achievement8 = theory.createSecretAchievement(7, "E=mc²", "Einstenium amout > 1e10","no", () => currencies[7].value > BigNumber.from(1e10));
     achievement9 = theory.createSecretAchievement(8, "who on earth will do this", "buy 1 million U_1 level", "professional clicker", () => Um.level>1000000);
     achievement10 = theory.createSecretAchievement(9,"you are half way there", "ONE GIGA CLICKS", "baldy.exe", ()=>Um.level>BigNumber.from(1000000000));
     achievement11 = theory.createSecretAchievement(10,"The fifth generation","who knows when, the end of the beginning","the end...or is it?",()=> currencies[8].value > BigNumber.from(1e125));
 }
 var updateAvailability = () => {
-    reactors[0].isAvailable = URU.level > 0;
-    reactors[1].isAvailable = NpRU.level > 0;
-    reactors[2].isAvailable = PuRU.level > 0;
-    reactors[3].isAvailable = AmRU.level > 0;
-    reactors[4].isAvailable = CmRU.level > 0;
-    reactors[5].isAvailable = BkRU.level > 0;
-    reactors[6].isAvailable = CfRU.level > 0;
-    reactors_puri[0].isAvailable = URU.level > 0;
-    reactors_puri[1].isAvailable = NpRU.level > 0;
-    reactors_puri[2].isAvailable = PuRU.level > 0;
-    reactors_puri[3].isAvailable = AmRU.level > 0;
-    reactors_puri[4].isAvailable = CmRU.level > 0;
-    reactors_puri[5].isAvailable = BkRU.level > 0;
-    reactors_puri[6].isAvailable = CfRU.level > 0;
+    reactors[0].isAvailable = reactors_perm[0].level > 0;
+    reactors[1].isAvailable = reactors_perm[1].level > 0;
+    reactors[2].isAvailable = reactors_perm[2].level > 0;
+    reactors[3].isAvailable = reactors_perm[3].level > 0;
+    reactors[4].isAvailable = reactors_perm[4].level > 0;
+    reactors[5].isAvailable = reactors_perm[5].level > 0;
+    reactors[6].isAvailable = reactors_perm[6].level > 0;
+    reactors_puri[0].isAvailable = reactors_perm[0].level > 0;
+    reactors_puri[1].isAvailable = reactors_perm[1].level > 0;
+    reactors_puri[2].isAvailable = reactors_perm[2].level > 0;
+    reactors_puri[3].isAvailable = reactors_perm[3].level > 0;
+    reactors_puri[4].isAvailable = reactors_perm[4].level > 0;
+    reactors_puri[5].isAvailable = reactors_perm[5].level > 0;
+    reactors_puri[6].isAvailable = reactors_perm[6].level > 0;
     MSR.isAvailable = PHWR.level > 0;
     OPHWR.isAvailable = PHWR.level > 0;
     OMSR.isAvailable = MSR.level > 0;
