@@ -17,8 +17,6 @@ var Um ,UD
 
 var reactors = new Array(7);
 var reactors_puri = new Array(7);
-
-var URU, NpRU, PuRU, AmRU, CmRU, BkRU, CfRU;
 var reactors_perm = new Array(7);
 
 var OPHWR, OMSR,OI;
@@ -153,20 +151,10 @@ var init = () => {
     achievement11 = theory.createSecretAchievement(10,"The fifth generation","who knows when, the end of the beginning","the end...or is it?",()=> currencies[8].value > BigNumber.from(1e125));
 }
 var updateAvailability = () => {
-    reactors[0].isAvailable = reactors_perm[0].level > 0;
-    reactors[1].isAvailable = reactors_perm[1].level > 0;
-    reactors[2].isAvailable = reactors_perm[2].level > 0;
-    reactors[3].isAvailable = reactors_perm[3].level > 0;
-    reactors[4].isAvailable = reactors_perm[4].level > 0;
-    reactors[5].isAvailable = reactors_perm[5].level > 0;
-    reactors[6].isAvailable = reactors_perm[6].level > 0;
-    reactors_puri[0].isAvailable = reactors_perm[0].level > 0;
-    reactors_puri[1].isAvailable = reactors_perm[1].level > 0;
-    reactors_puri[2].isAvailable = reactors_perm[2].level > 0;
-    reactors_puri[3].isAvailable = reactors_perm[3].level > 0;
-    reactors_puri[4].isAvailable = reactors_perm[4].level > 0;
-    reactors_puri[5].isAvailable = reactors_perm[5].level > 0;
-    reactors_puri[6].isAvailable = reactors_perm[6].level > 0;
+    for (let i = 0; i < 7; ++i) {
+        reactors[i].isAvailable = reactors_perm[i].level > 0;
+        reactors_puri[i].isAvailable = reactors_perm[i].level > 0;
+    }
     MSR.isAvailable = PHWR.level > 0;
     OPHWR.isAvailable = PHWR.level > 0;
     OMSR.isAvailable = MSR.level > 0;
