@@ -14,8 +14,6 @@ var UDExp, PHWR, MSR;
 quaternaryEntries = [];
 var isCurrencyVisible = (index) => index == 8;
 var init = () => {
-    quaternaryEntries.width = 200;
-
     currency1 = theory.createCurrency("U","U");
     currency2 = theory.createCurrency("Np","Np");
     currency3 = theory.createCurrency("Pu","Pu");
