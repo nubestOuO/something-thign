@@ -389,14 +389,14 @@ var getSecondaryEquation = () => theory.latexSymbol + "=\\max P^{0.76}";
 var getQuaternaryEntries = () => {
     if (quaternaryEntries.length == 0)
     {
-        quaternaryEntries.push(new QuaternaryEntry("U", null));
-        quaternaryEntries.push(new QuaternaryEntry("Np", null));
-        quaternaryEntries.push(new QuaternaryEntry("Pu", null));
-        quaternaryEntries.push(new QuaternaryEntry("Am", null));
-        quaternaryEntries.push(new QuaternaryEntry("Cm", null));
-        quaternaryEntries.push(new QuaternaryEntry("Bk", null));
-        quaternaryEntries.push(new QuaternaryEntry("Cf", null));
-        quaternaryEntries.push(new QuaternaryEntry("Es", null));
+        quaternaryEntries.push(new QuaternaryEntry("_{U}", null));
+        quaternaryEntries.push(new QuaternaryEntry("_{Np}", null));
+        quaternaryEntries.push(new QuaternaryEntry("_{Pu}", null));
+        quaternaryEntries.push(new QuaternaryEntry("_{A_m}", null));
+        quaternaryEntries.push(new QuaternaryEntry("_{C_m}", null));
+        quaternaryEntries.push(new QuaternaryEntry("_{Bk}", null));
+        quaternaryEntries.push(new QuaternaryEntry("_{Cf}", null));
+        quaternaryEntries.push(new QuaternaryEntry("_{Es}", null));
     }
     quaternaryEntries[0].value=currency1.value;
     quaternaryEntries[1].value=currency2.value;
