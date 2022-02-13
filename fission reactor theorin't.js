@@ -13,8 +13,12 @@ var version = 1.14;
 var currencies = new Array(9);
 var currencies_names = ["U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "P"]
 
-var Um ,UD, URU, UR, NpRU, NpR, PuRU, PuR, AmRU, AmR, CmRU, CmR, BkRU, BkR, CfRU, CfR, URT, NpRT, PuRT, AmRT, CmRT, BkRT, CfRT,OPHWR, OMSR,OI;
-var global_vars = new Array(26);
+var Um ,UD, URU, NpRU, PuRU, AmRU, CmRU, BkRU, CfRU;
+
+var reactors = new Array(7);
+var reactors_puri = new Array(7);
+
+var OPHWR, OMSR,OI;
 var UDExp, PHWR, MSR;
 
 quaternaryEntries = [];
@@ -25,6 +29,8 @@ var init = () => {
         currencies[i] = theory.createCurrency(currencies_names[i], currencies_names[i]);
         currencies[i].value = BigNumber.ZERO;
     }
+    let names = ["Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium"];
+
     {
         let getDesc = (level) => "(\\text{U}_1)\\text{Uranium Mine level:" + level+ "}";
         let getInfo = (level) => "(\\text{U}_1)\\text{U mine level:}" +getUm(level).toString(0);
@@ -39,118 +45,36 @@ var init = () => {
         UD.getDescription = (_) => Utils.getMath(getDesc(UD.level));
         UD.getInfo = (amount) => Utils.getMathTo(getInfo(UD.level), getInfo(UD.level + 1));
     }
+
     {
-        let getDesc = (level) => "(\\text{U}_3)\\text{Uranium Reactor level:" + level+ "}";
-        let getInfo = (level) => "(\\text{U}_3)\\text{Reactor power:}" +getUR(level).toString(0);
-        UR = theory.createUpgrade(1, currencies[0], new ExponentialCost(1, Math.log2(1.3)*0.9768));
-        UR.getDescription = (_) => Utils.getMath(getDesc(UR.level));
-        UR.getInfo = (amount) => Utils.getMathTo(getInfo(UR.level), getInfo(UR.level + 1));
-        UR.isAvailable = false;
+        let ReactPowr = [getUR, getNpR, getPuR, getAmR, getCmR, getBkR, getCfR];
+        let up_indices = [3, 1, 1, 1, 1, 1, 1];
+        let exp_consts = [[1.3, .9768], [1.7, .9772], [1.7, .9779], [1.7, .9782], [1.7, .978], [1.7, .978], [1.65, .9779]];
+
+        for (let i = 0; i < names.length; ++i) {
+            let getDesc = (level) => `(\\text{${currencies_names[i]}}_${up_indices[i]})\\text{${names[i]} Reactor level: ${level}}`;
+            let getInfo = (level) => `(\\text{${currencies_names[i]}}_${up_indices[i]})\\text{Reactor power:}${(ReactPowr[i](level)).toString(0)}`;
+            reactors[i] = theory.createUpgrade(i + 1, currencies[i], new ExponentialCost(1, Math.log2(exp_consts[i][0]) * exp_consts[i][1]));
+            reactors[i].getDescription = (_) => Utils.getMath(getDesc(reactors[i].level));
+            reactors[i].getInfo = (amount) => Utils.getMathTo(getInfo(reactors[i].level), getInfo(reactors[i].level + 1));
+            reactors[i].isAvailable = false;
+        }
     }
     {
-        let getDesc = (level) => "(\\text{U}_4)\\text{Uranium fuel purifier power:}2^{" + level + "}";
-        let getInfo = (level) => "(\\text{U}_4)\\text{purifier power:}" +getURT(level).toString(0);
-        URT = theory.createUpgrade(9, currencies[1], new ExponentialCost(1, Math.log2(3.3)*0.977));
-        URT.getDescription = (_) => Utils.getMath(getDesc(URT.level));
-        URT.getInfo = (amount) => Utils.getMathTo(getInfo(URT.level), getInfo(URT.level + 1));
-        URT.isAvailable = false;
+        let PuriPowr = [getURT, getNpRT, getPuRT, getAmRT, getCmRT, getBkRT, getCfRT];
+        let up_indices = [4, 2, 2, 2, 2, 2, 2];
+        let exp_consts = [[3.3, .977], [3.9, .9773], [4.9, .978], [3.9, .9779], [2.9, .9881], [3.9, .9777], [2.9, .9778]];
+
+        for (let i = 0; i < names.length; ++i) {
+            let getDesc = (level) => `(\\text{${currencies_names[i]}}_${up_indices[i]})\\text{${names[i]} fuel purifier power:}2^{${level}}`;
+            let getInfo = (level) => `(\\text{${currencies_names[i]}}_${up_indices[i]})\\text{purifier power:}${(PuriPowr[i](level)).toString(0)}`;
+            reactors_puri[i] = theory.createUpgrade(i + 9, currencies[i + 1], new ExponentialCost(1, Math.log2(exp_consts[i][0]) * exp_consts[i][1]));
+            reactors_puri[i].getDescription = (_) => Utils.getMath(getDesc(reactors_puri[i].level));
+            reactors_puri[i].getInfo = (amount) => Utils.getMathTo(getInfo(reactors_puri[i].level), getInfo(reactors_puri[i].level + 1));
+            reactors_puri[i].isAvailable = false;
+        }
     }
-    {
-        let getDesc = (level) => "(\\text{Np}_1)\\text{Neptunium Reactor level:" + level+ "}";
-        let getInfo = (level) => "(\\text{Np}_1)\\text{Reactor power:}" +getNpR(level).toString(0);
-        NpR= theory.createUpgrade(2, currencies[1], new ExponentialCost(1, Math.log2(1.7)*0.9772));
-        NpR.getDescription = (_) => Utils.getMath(getDesc(NpR.level));
-        NpR.getInfo = (amount) => Utils.getMathTo(getInfo(NpR.level), getInfo(NpR.level + 1));
-        NpR.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Np}_2)\\text{Neptunium fuel purifier power:}2^{" + level + "}";
-        let getInfo = (level) => "(\\text{Np}_2)\\text{purifier power:}" + getNpRT(level).toString(0);
-        NpRT= theory.createUpgrade(10, currencies[2], new ExponentialCost(1, Math.log2(3.9)*0.9773));
-        NpRT.getDescription = (_) => Utils.getMath(getDesc(NpRT.level));
-        NpRT.getInfo = (amount) => Utils.getMathTo(getInfo(NpRT.level), getInfo(NpRT.level + 1));
-        NpRT.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Pu}_1)\\text{Plutonium Reactor level:" + level+ "}";
-        let getInfo = (level) => "(\\text{Pu}_1)\\text{Reactor power:}" +getPuR(level).toString(0);
-        PuR = theory.createUpgrade(3, currencies[2], new ExponentialCost(1, Math.log2(1.7)*0.9779));
-        PuR.getDescription = (_) => Utils.getMath(getDesc(PuR.level));
-        PuR.getInfo = (amount) => Utils.getMathTo(getInfo(PuR.level), getInfo(PuR.level + 1));
-        PuR.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Pu}_2)\\text{Plutonium fuel purifier power:}2^{" + level + "}";
-        let getInfo = (level) => "(\\text{Pu}_2)\\text{purifier power:}" + getPuRT(level).toString(0);
-        PuRT = theory.createUpgrade(11, currencies[3], new ExponentialCost(1, Math.log2(4.9)*0.978));
-        PuRT.getDescription = (_) => Utils.getMath(getDesc(PuRT.level));
-        PuRT.getInfo = (amount) => Utils.getMathTo(getInfo(PuRT.level), getInfo(PuRT.level + 1));
-        PuRT.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Am}_1)\\text{Americium Reactor level:" + level+ "}";
-        let getInfo = (level) => "(\\text{Am}_1)\\text{Reactor power:}" +getAmR(level).toString(0);
-        AmR = theory.createUpgrade(4, currencies[3], new ExponentialCost(1, Math.log2(1.7)*0.9782));
-        AmR.getDescription = (_) => Utils.getMath(getDesc(AmR.level));
-        AmR.getInfo = (amount) => Utils.getMathTo(getInfo(AmR.level), getInfo(AmR.level + 1));
-        AmR.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Am}_2)\\text{Americium fuel purifier power:}2^{" + level + "}";
-        let getInfo = (level) => "(\\text{Am}_2)\\text{purifier power:}" + getAmRT(level).toString(0);
-        AmRT = theory.createUpgrade(12, currencies[4], new ExponentialCost(1, Math.log2(3.9)*0.9779));
-        AmRT.getDescription = (_) => Utils.getMath(getDesc(AmRT.level));
-        AmRT.getInfo = (amount) => Utils.getMathTo(getInfo(AmRT.level), getInfo(AmRT.level + 1));
-        AmRT.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Cm}_1)\\text{Curium Reactor level:" + level+ "}";
-        let getInfo = (level) => "(\\text{Cm}_1)\\text{Reactor power:}" +getCmR(level).toString(0);
-        CmR = theory.createUpgrade(5, currencies[4], new ExponentialCost(1, Math.log2(1.7)*0.978));
-        CmR.getDescription = (_) => Utils.getMath(getDesc(CmR.level));
-        CmR.getInfo = (amount) => Utils.getMathTo(getInfo(CmR.level), getInfo(CmR.level + 1));
-        CmR.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Cm}_2)\\text{Curium fuel purifier power:}2^{" + level + "}";
-        let getInfo = (level) => "(\\text{Cm}_2)\\text{purifier power:}" + getCmRT(level).toString(0);
-        CmRT = theory.createUpgrade(13, currencies[5], new ExponentialCost(1, Math.log2(2.9)*0.9881));
-        CmRT.getDescription = (_) => Utils.getMath(getDesc(CmR.level));
-        CmRT.getInfo = (amount) => Utils.getMathTo(getInfo(CmR.level), getInfo(CmR.level + 1));
-        CmRT.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Bk}_1)\\text{Berkelium Reactor level:" + level+ "}";
-        let getInfo = (level) => "(\\text{Bk}_1)\\text{Reactor power:}" +getBkR(level).toString(0);
-        BkR = theory.createUpgrade(6, currencies[5], new ExponentialCost(1, Math.log2(1.7)*0.978));
-        BkR.getDescription = (_) => Utils.getMath(getDesc(BkR.level));
-        BkR.getInfo = (amount) => Utils.getMathTo(getInfo(BkR.level), getInfo(BkR.level + 1));
-        BkR.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Bk}_2)\\text{Berkelium fuel purifier power:}2^{" + level + "}";
-        let getInfo = (level) => "(\\text{Bk}_2)\\text{purifier power:}" + getBkRT(level).toString(0);
-        BkRT = theory.createUpgrade(14, currencies[6], new ExponentialCost(1, Math.log2(3.9)*0.9777));
-        BkRT.getDescription = (_) => Utils.getMath(getDesc(BkR.level));
-        BkRT.getInfo = (amount) => Utils.getMathTo(getInfo(BkR.level), getInfo(BkR.level + 1));
-        BkRT.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Cf}_1)\\text{Californium Reactor level:" + level+ "}";
-        let getInfo = (level) => "(\\text{Cf}_1)\\text{Reactor power:}" +getCfR(level).toString(0);
-        CfR = theory.createUpgrade(7, currencies[6], new ExponentialCost(1, Math.log2(1.65)*0.9779));
-        CfR.getDescription = (_) => Utils.getMath(getDesc(CfR.level));
-        CfR.getInfo = (amount) => Utils.getMathTo(getInfo(CfR.level), getInfo(CfR.level + 1));
-        CfR.isAvailable = false;
-    }
-    {
-        let getDesc = (level) => "(\\text{Cf}_2)\\text{Californium fuel purifier power:}2^{" + level + "}";
-        let getInfo = (level) => "(\\text{Cf}_2)\\text{purifier power:}" + getCfRT(level).toString(0);
-        CfRT = theory.createUpgrade(15, currencies[6], new ExponentialCost(1, Math.log2(2.9)*0.9778));
-        CfRT.getDescription = (_) => Utils.getMath(getDesc(CfRT.level));
-        CfRT.getInfo = (amount) => Utils.getMathTo(getInfo(CfRT.level), getInfo(CfRT.level + 1));
-        CfRT.isAvailable = false;
-    }
+    
     {
         let getDesc = (level) => "(\\text{R}_1)\\text{Overall Pressurized heavywater reactor level:" + level + "}";
         let getInfo = (level) => "(\\text{R}_1)\\text{OPHWR power:}" + getOPHWR(level).toString(0);
@@ -262,20 +186,20 @@ var init = () => {
     achievement11 = theory.createSecretAchievement(10,"The fifth generation","who knows when, the end of the beginning","the end...or is it?",()=> currencies[8].value > BigNumber.from(1e125));
 }
 var updateAvailability = () => {
-    UR.isAvailable = URU.level > 0;
-    NpR.isAvailable = NpRU.level > 0;
-    PuR.isAvailable = PuRU.level > 0;
-    AmR.isAvailable = AmRU.level > 0;
-    CmR.isAvailable = CmRU.level > 0;
-    BkR.isAvailable = BkRU.level > 0;
-    CfR.isAvailable = CfRU.level > 0;
-    URT.isAvailable = URU.level > 0;
-    NpRT.isAvailable = NpRU.level > 0;
-    PuRT.isAvailable = PuRU.level > 0;
-    AmRT.isAvailable = AmRU.level > 0;
-    CmRT.isAvailable = CmRU.level > 0;
-    BkRT.isAvailable = BkRU.level > 0;
-    CfRT.isAvailable = CfRU.level > 0;
+    reactors[0].isAvailable = URU.level > 0;
+    reactors[1].isAvailable = NpRU.level > 0;
+    reactors[2].isAvailable = PuRU.level > 0;
+    reactors[3].isAvailable = AmRU.level > 0;
+    reactors[4].isAvailable = CmRU.level > 0;
+    reactors[5].isAvailable = BkRU.level > 0;
+    reactors[6].isAvailable = CfRU.level > 0;
+    reactors_puri[0].isAvailable = URU.level > 0;
+    reactors_puri[1].isAvailable = NpRU.level > 0;
+    reactors_puri[2].isAvailable = PuRU.level > 0;
+    reactors_puri[3].isAvailable = AmRU.level > 0;
+    reactors_puri[4].isAvailable = CmRU.level > 0;
+    reactors_puri[5].isAvailable = BkRU.level > 0;
+    reactors_puri[6].isAvailable = CfRU.level > 0;
     MSR.isAvailable = PHWR.level > 0;
     OPHWR.isAvailable = PHWR.level > 0;
     OMSR.isAvailable = MSR.level > 0;
@@ -311,103 +235,103 @@ var tick = (elapsedTime, multiplier) => {
     //Uranium
     {
         let constants = [.55, .06, .02, .006, .005, .00003, .00001, .0000002, 2.22517e3];
-        currencies[0].value += currencies[0].value < UR.level ? 0 : UR.level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
+        currencies[0].value += currencies[0].value < reactors[0].level ? 0 : reactors[0].level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
 
         for (let i = 1; i < 7; ++i) {
-            currencies[i].value += currencies[0].value < UR.level ? 0 : UR.level*constants[i] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * (Math.log2(bonus));
+            currencies[i].value += currencies[0].value < reactors[0].level ? 0 : reactors[0].level*constants[i] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * (Math.log2(bonus));
         }
 
-        currencies[7].value += currencies[0].value < UR.level ? 0 : UR.level * constants[7] * URT.level * dt * 30 *
+        currencies[7].value += currencies[0].value < reactors[0].level ? 0 : reactors[0].level * constants[7] * reactors_puri[0].level * dt * 30 *
             (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
-        currencies[8].value += currencies[0].value < UR.level ? 0 : UR.level * dt * BigNumber.from(constants[8]) * URT.level * 
+        currencies[8].value += currencies[0].value < reactors[0].level ? 0 : reactors[0].level * dt * BigNumber.from(constants[8]) * reactors_puri[0].level * 
             Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
     }
     //neptunium
     {
         let constants = [.1, .412, .165, .014, .016, .001, .008, .001, 2.23124e5];
-        currencies[1].value += currencies[1].value < NpR.level ? 0 : NpR.level * constants[1] * dt * 30 * (Math.log2(bonus)) * (Math.log2(bonus));
+        currencies[1].value += currencies[1].value < reactors[1].level ? 0 : reactors[1].level * constants[1] * dt * 30 * (Math.log2(bonus)) * (Math.log2(bonus));
         
         for (let i = 0; i < 6; ++i) {
             if (i == 1) continue;
-            currencies[i].value += currencies[1].value < NpR.level ? 0 : NpR.level * constants[i] * dt * 30 * (1 + (OPHWR.level)) * (1 + (OMSR.level)) * (Math.log2(bonus));
+            currencies[i].value += currencies[1].value < reactors[1].level ? 0 : reactors[1].level * constants[i] * dt * 30 * (1 + (OPHWR.level)) * (1 + (OMSR.level)) * (Math.log2(bonus));
         }
 
-        currencies[7].value += currencies[1].value < NpR.level ? 0 : NpR.level * constants[7] * NpRT.level * dt * 30 * 
+        currencies[7].value += currencies[1].value < reactors[1].level ? 0 : reactors[1].level * constants[7] * reactors_puri[1].level * dt * 30 * 
             (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
-        currencies[8].value += currencies[1].value < NpR.level ? 0 : UR.level * NpR.level * dt * BigNumber.from(constants[8]) * NpRT.level *
+        currencies[8].value += currencies[1].value < reactors[1].level ? 0 : reactors[0].level * reactors[1].level * dt * BigNumber.from(constants[8]) * reactors_puri[1].level *
             Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
     }
     //plutonium
     {
         let constants = [.3, .22, .29, .01, .0008, .003, 2.089e6];
-        currencies[2].value += currencies[2].value < PuR.level ? 0 : PuR.level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
+        currencies[2].value += currencies[2].value < reactors[2].level ? 0 : reactors[2].level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
         
         for (let i = 3; i < 7; ++i) {
-            currencies[i].value += currencies[2].value < PuR.level ? 0 : PuR.level * constants[i - 2] * dt * 30 * (1 + OPHWR.level) * (1 + OMSR.level) * Math.log2(bonus);
+            currencies[i].value += currencies[2].value < reactors[2].level ? 0 : reactors[2].level * constants[i - 2] * dt * 30 * (1 + OPHWR.level) * (1 + OMSR.level) * Math.log2(bonus);
         }
 
-        currencies[7].value += currencies[2].value < PuR.level ? 0 : PuR.level * constants[5] * PuRT.level * dt * 30 *
+        currencies[7].value += currencies[2].value < reactors[2].level ? 0 : reactors[2].level * constants[5] * reactors_puri[2].level * dt * 30 *
             (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
-        currencies[8].value += currencies[2].value < PuR.level ? 0 : UR.level * NpR.level *PuR.level * BigNumber.from(constants[6]) * dt *
-            PuRT.level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
+        currencies[8].value += currencies[2].value < reactors[2].level ? 0 : reactors[0].level * reactors[1].level *reactors[2].level * BigNumber.from(constants[6]) * dt *
+            reactors_puri[2].level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
     }
     //americium
     {
         let constants = [.4, .26, .03, .02, .08, 4.42e7];
-        currencies[3].value += currencies[3].value < AmR.level ? 0 : AmR.level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
+        currencies[3].value += currencies[3].value < reactors[3].level ? 0 : reactors[3].level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
         
         for (let i = 4; i < 7; ++i) {
-            currencies[i].value += currencies[3].value < AmR.level ? 0 : AmR.level * constants[i-3] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
+            currencies[i].value += currencies[3].value < reactors[3].level ? 0 : reactors[3].level * constants[i-3] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
         }
 
-        currencies[7].value += currencies[3].value < AmR.level ? 0 : AmR.level * 0.08 * AmRT.level * dt * 30 * 
+        currencies[7].value += currencies[3].value < reactors[3].level ? 0 : reactors[3].level * 0.08 * reactors_puri[3].level * dt * 30 * 
             (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
-        currencies[8].value += currencies[3].value < AmR.level ? 0 : UR.level * NpR.level * PuR.level * AmR.level * BigNumber.from(4.42e7) * dt * 
-            AmRT.level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
+        currencies[8].value += currencies[3].value < reactors[3].level ? 0 : reactors[0].level * reactors[1].level * reactors[2].level * reactors[3].level * BigNumber.from(4.42e7) * dt * 
+            reactors_puri[3].level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
     }
     //curium
     {
         let constants = [.34, .5, .1, .7, 2.3e8];
-        currencies[4].value += currencies[4].value < CmR.level ? 0 : CmR.level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
+        currencies[4].value += currencies[4].value < reactors[4].level ? 0 : reactors[4].level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
 
-        currencies[5].value += currencies[4].value < CmR.level ? 0 : CmR.level * constants[1] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
-        currencies[6].value += currencies[4].value < CmR.level ? 0 : CmR.level * constants[2] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
+        currencies[5].value += currencies[4].value < reactors[4].level ? 0 : reactors[4].level * constants[1] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
+        currencies[6].value += currencies[4].value < reactors[4].level ? 0 : reactors[4].level * constants[2] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
 
-        currencies[7].value += currencies[4].value < CmR.level ? 0 : CmR.level * constants[3] * CmRT.level * dt * 30 *
+        currencies[7].value += currencies[4].value < reactors[4].level ? 0 : reactors[4].level * constants[3] * reactors_puri[4].level * dt * 30 *
             (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
-        currencies[8].value += currencies[4].value < CmR.level ? 0 : UR.level * NpR.level * PuR.level * AmR.level * CmR.level * 
-            BigNumber.from(constants[4]) * dt * CmRT.level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
+        currencies[8].value += currencies[4].value < reactors[4].level ? 0 : reactors[0].level * reactors[1].level * reactors[2].level * reactors[3].level * reactors[4].level * 
+            BigNumber.from(constants[4]) * dt * reactors_puri[4].level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
     }
     //berkelium
     {
         let constants = [.4, .55, .25, 2e9];
-        currencies[5].value += currencies[5].value < BkR.level ? 0 : BkR.level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
+        currencies[5].value += currencies[5].value < reactors[5].level ? 0 : reactors[5].level * constants[0] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
 
-        currencies[6].value += currencies[5].value < BkR.level ? 0 : BkR.level * constants[1] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
+        currencies[6].value += currencies[5].value < reactors[5].level ? 0 : reactors[5].level * constants[1] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
 
-        currencies[7].value += currencies[5].value < BkR.level ? 0 : BkR.level * constants[2] * BkRT.level * dt * 30 * 
+        currencies[7].value += currencies[5].value < reactors[5].level ? 0 : reactors[5].level * constants[2] * reactors_puri[5].level * dt * 30 * 
             (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
-        currencies[8].value += currencies[5].value < BkR.level ? 0 : UR.level * NpR.level * PuR.level * AmR.level * CmR.level * BkR.level * 
-            BigNumber.from(constants[3]) * dt * BkRT.level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
+        currencies[8].value += currencies[5].value < reactors[5].level ? 0 : reactors[0].level * reactors[1].level * reactors[2].level * reactors[3].level * reactors[4].level * reactors[5].level * 
+            BigNumber.from(constants[3]) * dt * reactors_puri[5].level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
     }
     //californium
     {
         let constants = [.4, .3, .2, 5e10];
-        currencies[5].value += currencies[6].value < CfR.level ? 0 : CfR.level * constants[0] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
+        currencies[5].value += currencies[6].value < reactors[6].level ? 0 : reactors[6].level * constants[0] * dt * 30 * (1+(OPHWR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
 
-        currencies[6].value += currencies[6].value < CfR.level ? 0 : CfR.level * constants[1] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
+        currencies[6].value += currencies[6].value < reactors[6].level ? 0 : reactors[6].level * constants[1] * dt * 30 * Math.log2(bonus) * Math.log2(bonus);
 
-        currencies[7].value += currencies[6].value < CfR.level ? 0 : CfR.level * constants[2] * CfRT.level * dt * 30 * 
+        currencies[7].value += currencies[6].value < reactors[6].level ? 0 : reactors[6].level * constants[2] * reactors_puri[6].level * dt * 30 * 
             (1+(OPHWR.level)) * (1+(OMSR.level)) * (1+(OMSR.level)) * Math.log2(bonus);
-        currencies[8].value += currencies[6].value < CfR.level ? 0 : UR.level * NpR.level * PuR.level * AmR.level * CmR.level * BkR.level * CfR.level * 
-            BigNumber.from(constants[3]) * dt * CfRT.level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
+        currencies[8].value += currencies[6].value < reactors[6].level ? 0 : reactors[0].level * reactors[1].level * reactors[2].level * reactors[3].level * reactors[4].level * reactors[5].level * reactors[6].level * 
+            BigNumber.from(constants[3]) * dt * reactors_puri[6].level * Math.log2(bonus) * (1+(OPHWR.level)) * (1+(OMSR.level));
     }
     //tweaks decay
     currencies[0].value += -currencies[0].value * BigNumber.from(4.1341e-10) * dt * 30;
     let accessed = [
-        [UR.level, URT.level], [NpR.level, NpRT.level], [PuR.level, PuRT.level], 
-        [AmR.level, AmRT.level], [CmR.level, CmRT.level], [BkR.level, BkRT.level],
-        [CfR.level, CfRT.level]
+        [reactors[0].level, reactors_puri[0].level], [reactors[1].level, reactors_puri[1].level], [reactors[2].level, reactors_puri[2].level], 
+        [reactors[3].level, reactors_puri[3].level], [reactors[4].level, reactors_puri[4].level], [reactors[5].level, reactors_puri[5].level],
+        [reactors[6].level, reactors_puri[6].level]
     ];
 
     for (let i = 0; i < 7; ++i) {
